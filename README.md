@@ -230,13 +230,21 @@ Everything is released: the anonymized judgments, the full study database and ou
 
 People judged 428 conversations; to extend their checks to all 36,069, we calibrated an **LLM judge** on their judgments. It answers the same three questions, in the same order. We compared 13 judges (five open-weight LLMs and three prompts), selected one on three of the study's tasks, and checked it on the other two: there, `qwen3.6:35b` agrees with each annotator about as well as two annotators agree with each other.
 
-Over the whole corpus, it reproduces the study's findings: its blind ratings rise with the fork position, it confirms 84% of the injected instructions against 2% of foils, and it places 84% of onsets within one turn of the fork turn, on the 19 tasks people didn't see as on the five they did.
+<details>
+<summary>How it does on the whole corpus</summary>
+
+It reproduces the study's findings: its blind ratings rise with the fork position, it confirms 84% of the injected instructions against 2% of foils, and it places 84% of onsets within one turn of the fork turn, on the 19 tasks people didn't see as on the five they did.
+
+</details>
 
 The prompts, the code, the answers of all 13 judges on the study, and the selected judge's answers for every dialogue are in [`judge/`](judge/).
 
 > 💡 **Judge your own dialogues.** Generated new ones, with another LLM or on other tasks? The judge's blind 0–100 rating needs only the dialogue and its workflow, and on DialFork it ranks a conformant dialogue above a fork 96% of the time: flag the dialogues rated below 70, and you catch 91–94% of WIC, SSPC and GR forks with 1.3% false alarms. Three commands, in the [judge's docs](docs/llm_judge.md#judge-your-own-dialogues).
 
 ## 📦 What's in the box
+
+<details>
+<summary>📁 Repository layout</summary>
 
 ```
 dialfork/
@@ -252,6 +260,8 @@ dialfork/
 ├── scripts/               # data download, Hugging Face export, prediction export, figures
 └── docs/                  # dataset, tasks, leaderboard, human study, LLM judge, reproducing the paper
 ```
+
+</details>
 
 **Installation.** Scoring needs only Python 3.9+, and downloading the data needs `huggingface_hub` and `pyarrow`. To run our methods or regenerate the data, install the rest (they build on [sdialog](https://github.com/idiap/sdialog)):
 
