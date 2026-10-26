@@ -261,6 +261,24 @@ pip install -r requirements.txt
 
 Generation and the LLM experiments also need an [Ollama](https://ollama.com) server. Long runs come with Slurm scripts (`*.sbatch`, `run_all*.sh`), and each of them wraps a plain Python command that you can also run on your own machine. [Reproducing the paper](docs/reproducing.md) walks you through it, including how to set the Slurm scripts up for your cluster.
 
+## 🔭 Roadmap
+
+DialFork v1 stays as it is, so every number above stays reproducible. New releases come with their own leaderboard.
+
+- 🎧 **DialFork-Audio** · *spoken* (in progress): every dialogue as speech, with a new pair of voices for each.
+- 🔁 **DialFork v2** · *harder* (planned): the turns before each fork are paraphrased, so a fork shares no text with its original.
+
+<details>
+<summary>Why these two</summary>
+
+**Audio.** Conversations are often stored as recordings, not text. In audio, Task 2 becomes a way to search and cluster recordings by the procedure they follow, not only by their topic. A call center could, for instance, group its calls by how agents handled them, or find the calls closest to those of its best agents.
+
+**v2.** Forks replay their original up to the fork, so surface overlap carries part of the signal: in v1 the *shared prefix* control alone reaches τ = 0.68 on Task 2. Paraphrasing the prefix should bring it close to 0, and every method that leans on shared wording will drop with it. What is left is whether a method follows what the assistant *does*, not what it *says*.
+
+</details>
+
+Have an idea or a use case in mind? [Open an issue](https://github.com/idiap/dialfork/issues).
+
 ## 🤝 Get involved
 
 DialFork is meant to grow, and we'd love your help with that:

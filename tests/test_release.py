@@ -22,11 +22,11 @@ import tempfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def evaluate(task, path):
+def evaluate(task, path, *extra):
     with tempfile.TemporaryDirectory() as tmp:
         out = os.path.join(tmp, "scores.json")
         subprocess.run([sys.executable, os.path.join(ROOT, "evaluate.py"), "--task", str(task),
-                        path, "--json", out], check=True, cwd=ROOT, stdout=subprocess.DEVNULL)
+                        path, "--json", out, *extra], check=True, cwd=ROOT, stdout=subprocess.DEVNULL)
         with open(out) as fh:
             return json.load(fh)
 
@@ -46,6 +46,8 @@ def main():
     check(round(s["avg"], 3) == 0.882, "FlowKL averages tau = 0.882, as in the paper (%.3f)" % s["avg"])
     s = evaluate(1, "predictions/task1/fbd.csv.gz")
     check(round(s["avg"], 3) == 0.913, "FBD averages tau = 0.913, as in the paper (%.3f)" % s["avg"])
+    check(evaluate(1, "predictions/task1/fbd.csv.gz", "--release", "v1") == s,
+          "--release v1 is the default")
 
     print("Task 2")
     s = evaluate(2, "predictions/task2/flowscore__bge-m3.csv.gz")

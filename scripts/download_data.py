@@ -7,6 +7,8 @@
     python scripts/download_data.py            # both, into datasets/
     python scripts/download_data.py --no-star  # DialFork only
 
+--release picks the DialFork release (default: v1, the only one so far).
+
 DialFork comes from the Hugging Face Hub (https://huggingface.co/datasets/DialFork/dialfork) and is written to
 datasets/dialfork/<task>/originals/dialog_<id>.json and
 datasets/dialfork/<task>/<hallucination_type>/n_hallucinations_4/fork_at_segment_<k>/dialog_<id>.json,
@@ -26,6 +28,8 @@ import urllib.request
 import zipfile
 
 REPO_ID = "DialFork/dialfork"
+# release -> (Hub revision, folder under --output); evaluate.py has the same folders
+RELEASES = {"v1": ("v1", "dialfork")}
 STAR_COMMIT = "3058975092cdd09798e4a3a9e4ae135755824545"
 STAR_URL = "https://github.com/RasaHQ/STAR/archive/%s.zip" % STAR_COMMIT
 N_FORKS = 4
@@ -62,10 +66,10 @@ def rebuild(src, root):
     return n, len(done)
 
 
-def get_dialfork(out, repo_id, local=None):
+def get_dialfork(out, repo_id, revision, local=None):
     if local is None:
         from huggingface_hub import snapshot_download
-        local = snapshot_download(repo_id, repo_type="dataset",
+        local = snapshot_download(repo_id, repo_type="dataset", revision=revision,
                                   allow_patterns=["data/*", "extra/*"])
     n, tasks = rebuild(local, out)
     print("DialFork: %d dialogues over %d tasks -> %s" % (n, tasks, out))
@@ -90,6 +94,8 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("-o", "--output", default="datasets",
                     help="parent folder (default: datasets/)")
+    ap.add_argument("--release", choices=sorted(RELEASES), default="v1",
+                    help="DialFork release (default: v1)")
     ap.add_argument("--repo-id", default=REPO_ID)
     ap.add_argument("--from-local", default=None,
                     help="rebuild from an already downloaded/exported copy instead of the Hub")
@@ -97,10 +103,11 @@ def main():
     ap.add_argument("--no-dialfork", action="store_true", help="skip DialFork")
     args = ap.parse_args()
     if not args.no_dialfork:
-        target = os.path.join(args.output, "dialfork")
+        revision, folder = RELEASES[args.release]
+        target = os.path.join(args.output, folder)
         if os.path.isdir(target) and os.listdir(target):
             sys.exit("%s already exists and is not empty; remove it first" % target)
-        get_dialfork(target, args.repo_id, args.from_local)
+        get_dialfork(target, args.repo_id, revision, args.from_local)
     if not args.no_star:
         get_star(os.path.join(args.output, "STAR"))
 

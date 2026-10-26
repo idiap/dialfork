@@ -24,7 +24,8 @@ tags:
 - benchmark
 - synthetic
 configs:
-- config_name: default
+- config_name: v1
+  default: true
   data_files:
   - split: test
     path: data/test-*.parquet

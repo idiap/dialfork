@@ -30,8 +30,8 @@ Task 3 (hallucination turn prediction)   id, predicted_turn_index
     ignored, so a file covering all 36,278 dialogues is fine (--split all scores them all).
 
 In Task 1, `hallucination_type` may be the full name (goal_replacement) or the short one (GR).
-No third-party dependencies; the ground truth is read from datasets/dialfork/
-(see scripts/download_data.py).
+No third-party dependencies; the ground truth is read from the release's folder, datasets/dialfork/
+for v1, the default of --release (see scripts/download_data.py).
 """
 import argparse
 import csv
@@ -50,6 +50,7 @@ TYPES = {"workflow_identity_corruption": "WIC",
 SHORT = {v: k for k, v in TYPES.items()}
 COLUMNS = ("WIC", "SSPC", "GR", "CSC")      # table order in the paper
 N_FORKS = 4
+RELEASES = {"v1": "datasets/dialfork"}  # DialFork release -> ground-truth folder (scripts/download_data.py)
 FILE_RE = re.compile(r"^dialog_(\d+)\.json$")
 FORK_ID_RE = re.compile(r"^(\d+)-(WIC|SSPC|GR|CSC)-k(\d+)$")
 ASSISTANT = {"system", "assistant", "agent"}
@@ -315,7 +316,10 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("predictions", help="prediction CSV file")
     ap.add_argument("--task", type=int, choices=(1, 2, 3), required=True)
-    ap.add_argument("--data", default="datasets/dialfork", help="DialFork root folder")
+    ap.add_argument("--release", choices=sorted(RELEASES), default="v1",
+                    help="DialFork release to score against (default: v1)")
+    ap.add_argument("--data", default=None,
+                    help="DialFork root folder (default: the release's folder, datasets/dialfork for v1)")
     ap.add_argument("--per-task", action="store_true", help="also print the per-task breakdown")
     ap.add_argument("--allow-missing", action="store_true",
                     help="score only the units/dialogues present in the file")
@@ -328,6 +332,8 @@ def main():
                     help="Task 3: the split to score (default: the official Task 3 test split)")
     ap.add_argument("--json", default=None, help="also write the numbers to this JSON file")
     args = ap.parse_args()
+    if args.data is None:
+        args.data = RELEASES[args.release]
     if args.weights is None:
         args.weights = (W_HALLU_MAE, W_CONF_MAE, W_HALLU_COV, W_CONF_COV)
     else:
