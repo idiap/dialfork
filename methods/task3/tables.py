@@ -105,6 +105,8 @@ Non-streaming methods:
       * gemma4:31b
       * qwen3.6:35b
       * gpt-oss:20b
+      * mistral-small3.2:24b
+      * llama3.3:70b
 
 Main manuscript table composition:
   - shared baselines
@@ -329,6 +331,8 @@ def _pretty_method_label(method_label):
             "gemma4": "Gemma4",
             "gpt-oss": "GPT-OSS",
             "qwen3.6": "Qwen3.6",
+            "mistral-small3.2": "Mistral-Small-3.2",
+            "llama3.3": "Llama-3.3",
         }
         model_disp = model_map.get(model, model)
         if size:

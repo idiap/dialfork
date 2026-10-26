@@ -10,10 +10,14 @@
 # bash methods/task3/run_all_llm.sh -o results/task3/offline/ -m gpt-oss:20b
 # bash methods/task3/run_all_llm.sh -o results/task3/offline/ -m gemma4:31b
 # bash methods/task3/run_all_llm.sh -o results/task3/offline/ -m qwen3.6:35b
+# bash methods/task3/run_all_llm.sh -o results/task3/offline/ -m mistral-small3.2:24b
+# bash methods/task3/run_all_llm.sh -o results/task3/offline/ -m llama3.3:70b   # 80 GB GPU; see docs/reproducing.md
 
 # bash methods/task3/run_all_llm.sh -o results/task3/offline/ -m gpt-oss:20b --no-workflow
 # bash methods/task3/run_all_llm.sh -o results/task3/offline/ -m gemma4:31b --no-workflow
 # bash methods/task3/run_all_llm.sh -o results/task3/offline/ -m qwen3.6:35b --no-workflow
+# bash methods/task3/run_all_llm.sh -o results/task3/offline/ -m mistral-small3.2:24b --no-workflow
+# bash methods/task3/run_all_llm.sh -o results/task3/offline/ -m llama3.3:70b --no-workflow
 
 
 # Default values

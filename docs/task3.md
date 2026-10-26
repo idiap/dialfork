@@ -46,7 +46,7 @@ On top of this, two detectors decide when to flag:
 
 Both thresholds are calibrated on the same `train` conformant dialogues, for a target false-alarm rate of about 5% on them. The **+NC** variants weight each transition by a *node confidence*, a softmax over the turn's similarity to the nearest centroids, which discounts turns that lie between clusters.
 
-**Non-streaming (LLMs).** Zero-shot prompting of open-weight LLMs (Gemma4-31B, Qwen3.6-35B, GPT-OSS-20B) asks for the system turn where the dialogue first deviates, or *none*. In the workflow regime, the prompt also includes the ground-truth workflow.
+**Non-streaming (LLMs).** Zero-shot prompting of open-weight LLMs (Gemma4-31B, Qwen3.6-35B, GPT-OSS-20B, Mistral-Small-3.2-24B, Llama-3.3-70B) asks for the system turn where the dialogue first deviates, or *none*. In the workflow regime, the prompt also includes the ground-truth workflow.
 
 **Baselines.** Always predict the first, the last, or a random turn.
 
@@ -78,18 +78,22 @@ As reported in the paper, on the 18,241 dialogues of the Task 3 `test` split; MA
 | non-streaming | GPT-OSS-20B | 10.10 | 6.70 | 4.77 | 4.34 | 6.48 | 72.38 | 4.40 | 20.04% | 62.65 |
 | non-streaming | Qwen3.6-35B | 8.45 | 6.46 | 3.28 | 4.28 | 5.62 | 82.94 | 4.86 | 29.92% | 64.56 |
 | non-streaming | Gemma4-31B | 10.13 | 7.12 | 2.26 | 3.88 | 5.85 | 73.33 | 4.63 | 9.79% | 65.62 |
+| non-streaming | Llama-3.3-70B | 8.10 | 5.00 | 2.04 | 2.85 | 4.50 | 80.62 | 5.69 | 18.36% | 67.09 |
+| non-streaming | Mistral-Small-3.2-24B | 8.51 | 5.56 | 2.88 | 3.98 | 5.23 | 78.20 | 4.60 | 12.12% | 68.14 |
 | + workflow | GPT-OSS-20B | 5.18 | 1.37 | 1.40 | 2.45 | 2.60 | 96.88 | 4.45 | 81.64% | 62.31 |
 | + workflow | Qwen3.6-35B | 4.96 | 1.14 | 1.36 | 1.85 | 2.33 | 96.71 | 4.57 | 53.96% | 71.87 |
-| + workflow | Gemma4-31B | 5.30 | 0.51 | 1.31 | 1.28 | 2.10 | 93.03 | 4.41 | 30.48% | **77.06** |
+| + workflow | Mistral-Small-3.2-24B | 5.03 | 1.36 | 1.74 | 2.14 | 2.57 | 92.91 | 4.94 | 16.68% | 76.38 |
+| + workflow | Gemma4-31B | 5.30 | 0.51 | 1.31 | 1.28 | 2.10 | 93.03 | 4.41 | 30.48% | 77.06 |
+| + workflow | Llama-3.3-70B | 3.83 | 0.69 | 1.19 | 1.61 | 1.83 | 93.89 | 5.18 | 21.06% | **77.09** |
 
 **Best streaming Score, by encoder** (paper appendix): LaBSE 73.69 (SS) · D2F 73.28 (IT+NC) · Qwen3-Emb. 72.06 (IT) · EmbGemma 71.93 (IT+NC) · SBERT 70.61 (IT) · BGE-M3 66.20 (IT) · DSE 66.02 (IT).
 
 **What the numbers say.**
 
-- **Streaming detectors** run turn by turn, with no future context and no workflow, learning only from past conformant dialogues. They localize the fork within about 1.9–2.2 turns, flagging 93–95% of forks at a false-alarm rate of 12–16%. IT localizes better than SS; NC weighting sharpens IT further (MAE 1.94, the lowest of all methods) and flags more forks, at the cost of more false alarms.
-- **LLMs without the workflow localize far worse** (MAE 5.6–6.5) and flag only 72–83% of forks, despite seeing the whole dialogue.
-- **Given the workflow**, LLMs localize nearly as well as streaming (MAE 2.10–2.60) but raise many more false alarms on conformant dialogues: 30% for Gemma4-31B, up to 82%. Gemma4-31B + workflow has the best overall Score (77.06).
-- A lightweight detector that learns the workflow from past dialogues thus localizes deviations as they happen at least as well as an LLM given the true workflow and the whole dialogue. **No method is close to a perfect Score**: real-time localization of procedural hallucination is open.
+- **Streaming detectors** run turn by turn, with no future context and no ground-truth workflow, learning only from past conformant dialogues. They localize the fork within about 1.9–2.2 turns, flagging 93–95% of forks at a false-alarm rate of 12–16%. IT localizes better than SS; NC weighting sharpens IT further (MAE 1.94, the lowest of the methods that need no ground-truth workflow) and flags more forks, at the cost of more false alarms.
+- **LLMs without the workflow localize far worse** (MAE 4.5–6.5) and flag only 72–83% of forks, despite seeing the whole dialogue.
+- **Given the workflow**, LLMs localize about as well as streaming (MAE 1.83–2.60; Llama-3.3-70B localizes best of all methods, 1.83) but raise more false alarms on conformant dialogues: from 17% (Mistral-Small-3.2-24B) and 21% (Llama-3.3-70B) up to 82%. Llama-3.3-70B + workflow has the best overall Score (77.09), tied with Gemma4-31B (77.06).
+- A lightweight detector that learns the workflow from past dialogues thus localizes deviations as they happen nearly as well as the best LLM given the true workflow and the whole dialogue, with fewer false alarms (12–16%). **No method is close to a perfect Score**: real-time localization of procedural hallucination is open.
 
 To compare a new method with the paper's, score the paper's prediction files in [`predictions/task3/`](../predictions/task3/) with `evaluate.py`. Every (detector, encoder) pair and every LLM has one.
 

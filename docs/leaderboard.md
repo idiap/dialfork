@@ -17,7 +17,7 @@ This is where methods on DialFork meet. It starts with the methods from our pape
 1. **Score it** with [`evaluate.py`](../evaluate.py) on the full test set (no `--allow-missing`).
 2. **Open a pull request** that adds:
    - your prediction file to `predictions/taskN/` (a `.csv.gz` is fine);
-   - a row to the table below, with a link to your paper or code.
+   - a row to the table below (for Task 3, the table of your method's regime), with a link to your paper or code.
 3. **Tell us what your method used.** For Task 3, give the regime: streaming, non-streaming, or non-streaming + workflow. For every task, say whether it learned from or was calibrated on DialFork dialogues, and on which ones.
 
 We re-run `evaluate.py` on your file before merging. One rule: **never train or tune on the labels** (fork position, fork turn, hallucination type). DialFork has a single test split, and those labels are the answers. Using the conformant dialogues as reference data is fine (our streaming detectors do it), as long as you say so.
@@ -52,23 +52,48 @@ Kendall τ, higher is better. One row per method, with its best encoder; [the ta
 
 ## Task 3 · Hallucination turn prediction
 
-On the Task 3 `test` split (18,241 dialogues). Score, higher is better (MAE: lower is better). [Task page](task3.md)
+On the Task 3 `test` split (18,241 dialogues). Score, higher is better (MAE and false alarms: lower is better). [Task page](task3.md)
 
-| | method | regime | MAE | Cov. | False alarms | **Score** | link |
+The three regimes give a method different information, each strictly more than the one before, so **each regime has its own table**: a better rank across regimes would mostly reflect what the method was given. `evaluate.py` cannot check the regime, so say which one your method follows, and link its code.
+
+| regime | the decision on turn *t* may use | the ground-truth workflow |
+|---|---|---|
+| **streaming** | turns 1 … *t* only | not given |
+| **non-streaming** | the whole dialogue | not given |
+| **non-streaming + workflow** | the whole dialogue | given: an oracle reference, rarely available in practice |
+
+In every regime, a method may learn only from the conformant dialogues of the `train` split (see the [Task 3 split](dataset.md#task-3-split)); the *learns from* column says what it used. Trivial baselines, for reference: random turn 0.94, first turn 0, last turn 0.
+
+### Streaming
+
+The main track: a live guardrail, flagging a deviation as soon as it happens.
+
+| | method | learns from | MAE | Cov. | False alarms | **Score** | link |
 |---|---|---|---:|---:|---:|---:|---|
-| 📄 | Gemma4-31B | non-streaming + workflow | 2.10 | 93.03 | 30.48% | **77.06** | [DialFork paper](https://arxiv.org/abs/2610.21561) |
-| 📄 | SS (LaBSE) | **streaming** | 2.19 | 93.24 | 12.02% | 73.69 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
-| 📄 | IT (LaBSE) | **streaming** | 1.98 | 93.86 | 12.49% | 73.60 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
-| 📄 | IT + NC (LaBSE) | **streaming** | 1.94 | 94.80 | 16.31% | 73.23 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
-| 📄 | SS + NC (LaBSE) | **streaming** | 2.20 | 93.56 | 15.47% | 72.45 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
-| 📄 | Qwen3.6-35B | non-streaming + workflow | 2.33 | 96.71 | 53.96% | 71.87 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
-| 📄 | Gemma4-31B | non-streaming | 5.85 | 73.33 | 9.79% | 65.62 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
-| 📄 | Qwen3.6-35B | non-streaming | 5.62 | 82.94 | 29.92% | 64.56 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
-| 📄 | GPT-OSS-20B | non-streaming | 6.48 | 72.38 | 20.04% | 62.65 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
-| 📄 | GPT-OSS-20B | non-streaming + workflow | 2.60 | 96.88 | 81.64% | 62.31 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
-| | *Random (baseline)* | – | *6.60* | *100.00* | *100.00%* | *0.94* | |
+| 📄 | SS (LaBSE) | train conformant | 2.19 | 93.24 | 12.02% | **73.69** | [DialFork paper](https://arxiv.org/abs/2610.21561) |
+| 📄 | IT (LaBSE) | train conformant | 1.98 | 93.86 | 12.49% | 73.60 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
+| 📄 | IT + NC (LaBSE) | train conformant | 1.94 | 94.80 | 16.31% | 73.23 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
+| 📄 | SS + NC (LaBSE) | train conformant | 2.20 | 93.56 | 15.47% | 72.45 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
 
-The regimes are not equally hard. A streaming method sees one turn at a time, as a live guardrail would. A "+ workflow" method is handed the ground-truth workflow, which you rarely have in practice. Compare within a regime first.
+### Non-streaming
+
+| | method | learns from | MAE | Cov. | False alarms | **Score** | link |
+|---|---|---|---:|---:|---:|---:|---|
+| 📄 | Mistral-Small-3.2-24B | none (zero-shot) | 5.23 | 78.20 | 12.12% | **68.14** | [DialFork paper](https://arxiv.org/abs/2610.21561) |
+| 📄 | Llama-3.3-70B | none (zero-shot) | 4.50 | 80.62 | 18.36% | 67.09 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
+| 📄 | Gemma4-31B | none (zero-shot) | 5.85 | 73.33 | 9.79% | 65.62 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
+| 📄 | Qwen3.6-35B | none (zero-shot) | 5.62 | 82.94 | 29.92% | 64.56 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
+| 📄 | GPT-OSS-20B | none (zero-shot) | 6.48 | 72.38 | 20.04% | 62.65 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
+
+### Non-streaming + workflow (oracle reference)
+
+| | method | learns from | MAE | Cov. | False alarms | **Score** | link |
+|---|---|---|---:|---:|---:|---:|---|
+| 📄 | Llama-3.3-70B | none (zero-shot) | 1.83 | 93.89 | 21.06% | **77.09** | [DialFork paper](https://arxiv.org/abs/2610.21561) |
+| 📄 | Gemma4-31B | none (zero-shot) | 2.10 | 93.03 | 30.48% | 77.06 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
+| 📄 | Mistral-Small-3.2-24B | none (zero-shot) | 2.57 | 92.91 | 16.68% | 76.38 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
+| 📄 | Qwen3.6-35B | none (zero-shot) | 2.33 | 96.71 | 53.96% | 71.87 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
+| 📄 | GPT-OSS-20B | none (zero-shot) | 2.60 | 96.88 | 81.64% | 62.31 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
 
 ---
 

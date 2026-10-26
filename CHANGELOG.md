@@ -30,7 +30,11 @@ The dataset, the evaluation script, the paper's methods and their predictions, a
 - **Held-out evaluation.** Every method is scored on the `test` split. The streaming detectors learn their flow graph, n-gram model and thresholds from the `train` conformant dialogues only. In v1 they were calibrated on the same conformant dialogues they were scored on, which kept their false-alarm rate near 5% by construction.
 - **Streaming configuration.** The main table reports the encoder with the best Score, LaBSE, with a 3-gram model (v1: D2F, 6-gram). The other encoders and n-gram orders are in the paper's appendix.
 
-**Effect on the results.** Gemma4-31B with the workflow still has the best Score (77.06). The streaming detectors now localize forks better than every LLM, including those given the workflow (MAE 1.94 vs 2.10), with far fewer false alarms (12–16% vs 30–82%). v1's finding that the LLMs localize more sharply is reversed.
+**Added**
+
+- **Two more LLMs**, Mistral-Small-3.2-24B and Llama-3.3-70B, with and without the workflow, with the same prompts as the other three (prediction files in `predictions/task3/`).
+
+**Effect on the results.** Llama-3.3-70B with the workflow has the best Score (77.09), tied with Gemma4-31B (77.06), and localizes forks best (MAE 1.83). The streaming detectors, which need no ground-truth workflow, now localize forks about as well as the LLMs given the workflow (MAE 1.94 vs 1.83–2.60), with fewer false alarms (12–16% vs 17–82%). v1's finding that the LLMs localize far more sharply no longer holds.
 
 ### LLM judge (new since arXiv v1)
 

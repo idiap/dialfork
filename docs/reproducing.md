@@ -34,7 +34,7 @@ Run everything **from the repository root**: all scripts use paths relative to i
 
 **Two extras, only for some steps:**
 
-- **Ollama**, for the LLM experiments of Task 3, the LLM judge, and generating the data. [Install it](https://ollama.com/download), then pull the models you need, e.g. `ollama pull gemma4:31b` (the paper also uses `qwen3.6:35b` and `gpt-oss:20b`, and the judge also `mistral-small3.2:24b` and `llama3.3:70b`).
+- **Ollama**, for the LLM experiments of Task 3, the LLM judge, and generating the data. [Install it](https://ollama.com/download), then pull the models you need, e.g. `ollama pull gemma4:31b` (the paper also uses `qwen3.6:35b`, `gpt-oss:20b`, `mistral-small3.2:24b` and `llama3.3:70b`).
 - **A Hugging Face token**, only for gated models such as `google/embeddinggemma-300m`: accept the model's terms on its Hub page, then `export HF_TOKEN=hf_...`.
 
 ## 2. Running the scripts: locally or on a Slurm cluster
@@ -178,7 +178,7 @@ sbatch methods/task3/streaming.sbatch -m sentence-transformers/LaBSE -n 6
 
 Results go to `results/task3/<encoder>/lm-<N>-gram/`.
 
-**LLMs.** Zero-shot prompting through Ollama, with and without the workflow, for the paper's three models. Pull the models first (`ollama pull gemma4:31b`). The wrapper starts an Ollama server for the job; if you call `llm.py` directly, start one yourself (`ollama serve`).
+**LLMs.** Zero-shot prompting through Ollama, with and without the workflow, for the paper's five models. Pull the models first (`ollama pull gemma4:31b`). The wrapper starts an Ollama server for the job; if you call `llm.py` directly, start one yourself (`ollama serve`).
 
 ```bash
 # locally, one model and setting
@@ -186,13 +186,15 @@ python methods/task3/llm.py -d datasets/dialfork -m gemma4:31b -o results/task3/
 python methods/task3/llm.py -d datasets/dialfork -m gemma4:31b -o results/task3/offline --no-workflow
 
 # Slurm, one job per STAR task
-for model in gemma4:31b qwen3.6:35b gpt-oss:20b; do
+for model in gemma4:31b qwen3.6:35b gpt-oss:20b mistral-small3.2:24b llama3.3:70b; do
   bash methods/task3/run_all_llm.sh -o results/task3/offline/ -m "$model"
   bash methods/task3/run_all_llm.sh -o results/task3/offline/ -m "$model" --no-workflow
 done
 ```
 
 Results go to `results/task3/offline/llm-<model>[-no-workflow]/`.
+
+`llama3.3:70b` needs an 80 GB GPU. On such a GPU, recent Ollama versions size the default context from the free memory (here, 131k tokens), which leaves too little room for the model and moves some of its layers to the CPU, slowing every call down by an order of magnitude. Cap it, as we did: `export OLLAMA_CONTEXT_LENGTH=8192` before submitting. The prompts are at most about 2,200 tokens, so nothing is cut.
 
 **The paper's tables:**
 

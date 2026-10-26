@@ -191,28 +191,25 @@ Here is where things stand in the paper. Think you can do better? We hope so! Th
 
 </td><td valign="top">
 
-**Task 3** · Score ↑ ‡
+**Task 3** · Score ↑ ‡ (best per regime)
 
-| method | Score |
+| regime · method | Score |
 |---|---:|
-| Gemma4-31B + workflow† | **77.06** |
-| Streaming SS | 73.69 |
-| Streaming IT | 73.60 |
-| Gemma4-31B | 65.62 |
-| Qwen3.6-35B | 64.56 |
-| GPT-OSS-20B | 62.65 |
+| streaming · SS | **73.69** |
+| non-streaming · Mistral-Small-3.2-24B | **68.14** |
+| + workflow† · Llama-3.3-70B | **77.09** |
 | *Random / first / last turn* | *0.94 / 0 / 0* |
 
 </td></tr>
 </table>
 
-<sub>All results are from the DialFork paper; new results go on the [leaderboard](docs/leaderboard.md). *Italic*: controls and trivial baselines. † Given the ground-truth workflow, which you rarely have in practice. ‡ Updated since [arXiv v1](https://arxiv.org/abs/2610.21561v1): held-out train/test split and consistent turn units ([changelog](CHANGELOG.md)). Each task page has the full breakdown: per type, per encoder, per metric.</sub>
+<sub>All results are from the DialFork paper; new results go on the [leaderboard](docs/leaderboard.md). *Italic*: controls and trivial baselines. † Given the ground-truth workflow, which you rarely have in practice: the regimes get different information, so compare within a regime ([leaderboard](docs/leaderboard.md#task-3--hallucination-turn-prediction)). ‡ Updated since [arXiv v1](https://arxiv.org/abs/2610.21561v1): held-out train/test split and consistent turn units ([changelog](CHANGELOG.md)). Each task page has the full breakdown: per type, per encoder, per metric.</sub>
 
 ### 🔍 What we found in the paper
 
 - **The forks deviate as intended.** Off-the-shelf set-distance metrics recover the fork order almost perfectly (τ up to 0.91), while dialogue length can't (τ ≈ 0.20 at best). People see it too ([below](#-do-people-agree)).
 - **Semantic similarity is not procedural similarity.** Embed two whole dialogues and compare them, and you rank forks poorly, down to τ = 0.52 for a strong encoder. Compare them turn by turn with **FlowScore** instead, and you beat every other method with **all seven encoders** we tried (τ 0.81–0.85, *p* < 0.001).
-- **Real-time localization is wide open.** Our streaming detectors are lightweight, need no workflow, and flag deviations as they happen, with only 3.5–5.6% false alarms. Zero-shot LLMs localize more sharply, but they need the whole conversation, abstain far more often, and, given the workflow, raise many more false alarms.
+- **Real-time localization is wide open.** Our streaming detectors are lightweight, need no ground-truth workflow (they learn it from past conformant dialogues), and flag deviations as they happen, within about two turns and with 12–16% false alarms. Zero-shot LLMs need the whole conversation: given the ground-truth workflow, they localize about as well (the best, Llama-3.3-70B, slightly better), but raise more false alarms (17–82%); without it, they localize far worse. No method reaches a Score of 78.
 
 ## 👥 Do people agree?
 

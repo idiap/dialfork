@@ -37,9 +37,11 @@ Served with [Ollama](https://ollama.com). Gemma4-31B also generated the dataset 
 
 | model | used for | Ollama | original release | license |
 |---|---|---|---|---|
-| Gemma 4 31B | generating DialFork; Task 3 LLM experiments | [`gemma4:31b`](https://ollama.com/library/gemma4) | [`google/gemma-4-31B-it`](https://huggingface.co/google/gemma-4-31B-it) | Apache-2.0 |
-| Qwen3.6 35B | Task 3 LLM experiments | [`qwen3.6:35b`](https://ollama.com/library/qwen3.6) | [`Qwen/Qwen3.6-35B-A3B`](https://huggingface.co/Qwen/Qwen3.6-35B-A3B) | Apache-2.0 |
-| GPT-OSS 20B | Task 3 LLM experiments | [`gpt-oss:20b`](https://ollama.com/library/gpt-oss) | [`openai/gpt-oss-20b`](https://huggingface.co/openai/gpt-oss-20b) | Apache-2.0 |
+| Gemma 4 31B | generating DialFork; Task 3 LLM experiments; LLM judge (compared, not selected: it generated the data) | [`gemma4:31b`](https://ollama.com/library/gemma4) | [`google/gemma-4-31B-it`](https://huggingface.co/google/gemma-4-31B-it) | Apache-2.0 |
+| Qwen3.6 35B | Task 3 LLM experiments; LLM judge (the selected one) | [`qwen3.6:35b`](https://ollama.com/library/qwen3.6) | [`Qwen/Qwen3.6-35B-A3B`](https://huggingface.co/Qwen/Qwen3.6-35B-A3B) | Apache-2.0 |
+| GPT-OSS 20B | Task 3 LLM experiments; LLM judge | [`gpt-oss:20b`](https://ollama.com/library/gpt-oss) | [`openai/gpt-oss-20b`](https://huggingface.co/openai/gpt-oss-20b) | Apache-2.0 |
+| Mistral Small 3.2 24B | Task 3 LLM experiments; LLM judge | [`mistral-small3.2:24b`](https://ollama.com/library/mistral-small3.2) | [`mistralai/Mistral-Small-3.2-24B-Instruct-2506`](https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506) | Apache-2.0 |
+| Llama 3.3 70B | Task 3 LLM experiments; LLM judge | [`llama3.3:70b`](https://ollama.com/library/llama3.3) | [`meta-llama/Llama-3.3-70B-Instruct`](https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct) | [Llama 3.3 Community License](https://www.llama.com/llama3_3/license/) |
 
 Licenses are as stated on each model's page when this page was written; check them there before use.
 
