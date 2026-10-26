@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: Copyright © 2026 Idiap Research Institute
+# SPDX-FileContributor: Sergio Burdisso <sergio.burdisso@idiap.ch>
+# SPDX-License-Identifier: MIT
+
+# Direct dependencies. evaluate.py and annotool/ need nothing beyond the Python
+# standard library.
+
+# Downloading the data (scripts/download_data.py) and the Hugging Face export
+huggingface_hub
+pyarrow
+
+# The paper's methods (methods/) and the generation pipeline (generation/)
+sdialog==0.4.10
+numpy
+pandas
+scipy
+scikit-learn
+nltk
+torch
+transformers
+sentence-transformers
+tqdm
+pydantic
+jinja2
+langchain-core
+
+# Figures (scripts/make_human_figure.py)
+matplotlib

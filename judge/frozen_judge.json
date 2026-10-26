@@ -1,0 +1,11 @@
+{
+ "model": "qwen3.6:35b",
+ "prompt": "P0",
+ "seed": 0,
+ "temperature": 0.0,
+ "selected_on": ["hotel_book", "bank_fraud_report", "weather"],
+ "reported_on": ["plane_book", "party_plan"],
+ "criterion": "mean agreement with the annotators on the selection tasks: Gwet AC1 on confirmation, Krippendorff alpha (interval) on the rating and on the onset turn",
+ "select_score": 0.812,
+ "note": "gemma4:31b generated DialFork and is excluded to avoid self-verification, although with reasoning enabled (P2) it scored highest on the selection tasks (0.842). Among the other judges, qwen3.6:35b P2 scored 0.813, within noise of P0, at about ten times the cost, so P0 was kept. The held-out tasks were not looked at before freezing."
+}

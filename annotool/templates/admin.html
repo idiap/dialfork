@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<!--
+SPDX-FileCopyrightText: Copyright © 2026 Idiap Research Institute
+SPDX-FileContributor: Sergio Burdisso <sergio.burdisso@idiap.ch>
+SPDX-License-Identifier: MIT
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DialFork annotation &mdash; admin</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="cozy">
+<header>
+  <span class="title">DialFork annotation</span>
+  <span class="chip admin-chip">&#x2699;&#xFE0F; admin</span>
+  <span class="spacer"></span>
+  <span class="meta" id="meta"></span>
+  <span class="meta" id="updated" style="opacity:.7"></span>
+  <button class="btn ghost sm" id="reload" style="margin-left:4px">Refresh</button>
+  <button class="btn ghost sm" id="pwBtn" title="change the admin password">&#x1F511;</button>
+  <button class="btn ghost sm" id="logout">Log out</button>
+</header>
+
+<div class="wrap">
+  <div id="flash"></div>
+  <div class="tiles" id="tiles"></div>
+
+  <!-- ============ annotators ============ -->
+  <section class="sec">
+    <div class="head">
+      <h2>&#x1F465; Annotators</h2>
+      <span class="sub" id="peopleSub"></span>
+      <span class="spacer"></span>
+      <label class="sub" title="Chocolates this person earns for finishing everything they hold, paid out per conversation. Change it later by clicking the number in their row; 0 hides chocolates for them.">&#x1F36B;
+        <input type="number" id="newChoco" min="0" max="1000" step="1" value="10" style="width:56px"></label>
+      <input type="text" id="newName" placeholder="Name or nickname" style="width:190px">
+      <button class="btn" id="addPerson">Add annotator</button>
+    </div>
+    <div class="body tight">
+      <table class="admin">
+        <thead><tr>
+          <th>Name</th><th>Link</th><th>Progress</th>
+          <th title="chocolates earned so far, to hand out / their allowance for finishing everything (click to change)">&#x1F36B;</th>
+          <th>Batches held</th><th class="right"></th>
+        </tr></thead>
+        <tbody id="people"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ batches ============ -->
+  <section class="sec">
+    <div class="head">
+      <h2>&#x1F4E6; Batches</h2>
+      <span class="sub" id="batchSub"></span>
+      <span class="spacer"></span>
+      <select id="newTask" style="max-width:260px"></select>
+      <select id="newSize" title="conversations (about 2.5 minutes each)">
+        <option value="5">5</option><option value="10">10</option>
+        <option value="15">15</option><option value="20" selected>20</option>
+        <option value="40">40</option><option value="60">60</option>
+        <option value="100">100</option>
+      </select>
+      <select id="newFor" style="max-width:150px" title="who it is for"></select>
+      <button class="btn" id="addBatch">New batch</button>
+    </div>
+    <div class="body" style="padding-bottom:8px">
+      <details class="help">
+        <summary>How batches work</summary>
+        <div class="md" style="margin-top:10px;max-width:720px">
+          <p>A <b>batch</b> is conversations of <b>one task</b>, in mini-blocks of 5
+             (about 2.5 minutes per conversation, so 20 is about 50 minutes). Nothing is fixed in advance: start
+             from zero, make batches as people become available, delete the ones you
+             do not need.</p>
+
+          <p><b>What to do:</b> give each person <b>one or two tasks</b> &mdash; one
+             batch per task. Someone who keeps judging against the same workflow gets
+             familiar with it and faster at spotting deviations. Choosing
+             <i>for &lt;person&gt;</i> draws the batch around what that person already
+             holds and gives it to them straight away. For agreement, give some
+             batches to a second person as well &mdash; ideally different pairings.</p>
+
+          <p><b>Why batches are built the way they are.</b> Two properties, both
+             load-bearing:</p>
+          <ul>
+            <li>Every mini-block of 5 is <b>balanced</b>: one fork of each hallucination
+                type, one at each of the four fork positions, plus 1 conformant
+                conversation; four of them make a block of 20 with each type at each
+                position once. People get them one mini-block at a time, so whatever is
+                finished is a balanced sample and collection can stop at any point.</li>
+            <li><b>Nobody sees two versions of the same source dialogue</b> &mdash; not
+                in one batch, and not across their batches. The versions share the
+                dialogue's opening, so comparing them would give away where the fork
+                is. That is why some people are sometimes <i>not offered</i> a batch;
+                the row says who and why.</li>
+          </ul>
+
+          <p>A batch needs as many source dialogues as it has conversations, so the
+             two smallest tasks (ride_status: 9, ride_change: 13) can only supply small
+             ones. When choosing
+             tasks, mixing short, medium and long ones (mean assistant turns shown in
+             the list) and different domains keeps the study representative.
+             Decide the task list and the stopping rule before collecting.</p>
+        </div>
+      </details>
+    </div>
+    <div class="body tight">
+      <table class="admin">
+        <thead><tr>
+          <th>Batch</th><th>Made of</th><th>Progress</th><th>Held by</th>
+          <th>Give to</th><th class="right"></th>
+        </tr></thead>
+        <tbody id="batches"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ results ============ -->
+  <section class="sec viz-root">
+    <div class="head">
+      <h2>&#x1F4CA; Results so far</h2>
+      <span class="sub">Recomputed from whatever has been submitted. Provisional
+        until collection stops.</span>
+    </div>
+    <div class="body">
+      <div id="excludeBox"></div>
+      <div class="toolbar" style="margin-bottom:4px">
+        <button class="btn" id="run">Compute report</button>
+        <label class="hint" style="display:flex;align-items:center;gap:6px">
+          <input type="checkbox" id="metrics"> include metric correlation
+          <span style="opacity:.7">(reads the Task 2 distances, predictions/task2 by default)</span></label>
+        <span class="spacer" style="flex:1"></span>
+        <a class="btn ghost" id="expCsv" download
+           title="every answer, one row per conversation and annotator">&#x2B07; answers.csv</a>
+        <a class="btn ghost" id="expZip" download
+           title="answers.csv, batches.csv, metric_correlation.csv and the report, zipped">&#x2B07;
+           everything (.zip)</a>
+      </div>
+      <div id="report"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ change password (mandatory while the default is in use) ============ -->
+<div id="pwModal" class="celebrate" hidden>
+  <form class="card pop pw-card" id="pwForm">
+    <h2 id="pwTitle">Change the admin password</h2>
+    <p class="hint" id="pwWhy"></p>
+    <input type="password" id="pwCur" placeholder="Current password" autocomplete="current-password">
+    <input type="password" id="pwNew" placeholder="New password (8+ characters)" autocomplete="new-password">
+    <input type="password" id="pwNew2" placeholder="New password, again" autocomplete="new-password">
+    <p class="err" id="pwErr"></p>
+    <div class="row" style="justify-content:flex-end;gap:10px">
+      <button type="button" class="btn ghost" id="pwCancel">Cancel</button>
+      <button type="submit" class="btn" id="pwSave">Save</button>
+    </div>
+  </form>
+</div>
+
+<!-- ============ batch viewer (overlay) ============ -->
+<div id="viewer" class="viewer" hidden>
+  <header>
+    <button class="btn ghost sm" id="vBack" hidden>&larr; batch</button>
+    <span class="title" id="vTitle"></span>
+    <span class="meta" id="vSub"></span>
+    <span class="spacer"></span>
+    <button class="btn ghost sm" id="vPrev" hidden>&lsaquo; prev</button>
+    <button class="btn ghost sm" id="vNext" hidden>next &rsaquo;</button>
+    <button class="btn ghost sm" id="vClose">Close <span class="kbd">Esc</span></button>
+  </header>
+  <div id="vBody"></div>
+</div>
+
+<script src="/static/render.js"></script>
+<script src="/static/charts.js"></script>
+<script src="/static/admin.js"></script>
+</body>
+</html>

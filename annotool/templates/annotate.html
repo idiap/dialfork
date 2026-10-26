@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<!--
+SPDX-FileCopyrightText: Copyright © 2026 Idiap Research Institute
+SPDX-FileContributor: Sergio Burdisso <sergio.burdisso@idiap.ch>
+SPDX-License-Identifier: MIT
+-->
+<html lang="en" >
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DialFork annotation</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="cozy">
+<header>
+  <span class="title">DialFork annotation</span>
+  <span class="spacer"></span>
+  <nav class="stages" id="stages" aria-label="your tasks"></nav>
+  <span class="meta" id="meta"></span>
+  <span class="me" id="me" hidden></span>
+</header>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div class="confetti" id="confetti" aria-hidden="true"></div>
+
+<div id="consent" class="center card" hidden>
+  <h1 style="margin-top:0" id="consentHello">Before you start</h1>
+  <p>You are helping check the quality of a research dataset of <b>simulated</b>
+     customer-service conversations. There is no real personal data involved, and
+     nothing about you is recorded beyond the answers you give and how long each
+     one took.</p>
+  <p>You will read a conversation between an <span class="role-a">assistant</span> and a
+     <span class="role-u">user</span>, and answer three short questions about whether the
+     <span class="role-a">assistant</span> followed the procedure
+     it was given. It takes about 2&ndash;3 minutes per conversation. You can stop at
+     any time and come back to the same link later.</p>
+  <p><b>Judge only the <span class="role-a">assistant</span>.</b> The
+     <span class="role-u">user</span> is played by another program and is never at fault.
+     Whether the <span class="role-u">user</span> ended up happy is not what we are asking
+     about &mdash; only whether the <span class="role-a">assistant</span> followed its own
+     procedure.</p>
+  <p class="choco-pitch" id="consentChoco" hidden></p>
+  <p>Your answers will be used, in aggregate and anonymously, in a research paper.</p>
+  <p><button class="btn" id="consentBtn">I understand &mdash; start</button></p>
+</div>
+
+<div id="finished" class="center card pop" hidden>
+  <div class="bigmark">&#10003;</div>
+  <h1 style="margin-top:0;text-align:center">All done &mdash; thank you!</h1>
+  <div id="finishedBody"></div>
+  <p class="hint" style="text-align:center">You can close this tab. If more is assigned
+     later, the same link will pick it up.</p>
+</div>
+
+<!-- learning a task, before its first conversation: three short slides -->
+<div id="intro" class="intro" hidden>
+  <div class="intro-top">
+    <span class="dots" id="introDots"></span>
+    <button type="button" class="linkbtn" id="introSkip">I know this task &mdash; skip</button>
+  </div>
+
+  <section class="slide" data-slide="0">
+    <div class="intro-card card">
+      <div class="emoji big rise" id="introEmoji" style="--i:0"></div>
+      <div class="kicker rise" id="introKicker" style="--i:1"></div>
+      <h1 class="rise" id="introHello" style="--i:2"></h1>
+      <p class="lead rise" id="introAbout" style="--i:3"></p>
+      <p class="soft rise" style="--i:4">Before the first conversation, let's take two
+        minutes to get to know this task. You'll judge every conversation of it against the
+        same steps, so it gets easier as you go.</p>
+      <div class="intro-actions rise" style="--i:5">
+        <button class="btn" data-go="1">Show me how it works &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-slide="1" hidden>
+    <div class="intro-card card">
+      <div class="kicker">How it works</div>
+      <h1>Three small questions per conversation</h1>
+      <div class="howto">
+        <div class="rise" style="--i:0"><b>1</b><div><strong>Your overall impression</strong>
+          <span>Read the conversation and say how well the
+          <span class="role-a">assistant</span> follows its steps.</span></div></div>
+        <div class="rise" style="--i:1"><b>2</b><div><strong>Look for something specific</strong>
+          <span>We tell you something it <i>may</i> have been told to do. Does it happen,
+          and where does it start?</span></div></div>
+        <div class="rise" style="--i:2"><b>3</b><div><strong>The earlier part</strong>
+          <span>We highlight where the extra instruction started. Check whether the
+          <span class="role-a">assistant</span> follows its steps before that point, and
+          leave a note if you like.</span></div></div>
+      </div>
+      <p class="soft rise" style="--i:3">There are no trick scores and no rush &mdash; take the
+        time you need. Only the <span class="role-a">assistant</span> is judged; the
+        <span class="role-u">user</span> is just context.</p>
+      <div class="intro-actions">
+        <button class="btn ghost" data-go="0">&larr; Back</button>
+        <button class="btn" data-go="2">Next: the assistant's steps &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-slide="2" hidden>
+    <div class="intro-card card">
+      <div class="kicker" id="introStepsKicker">The steps</div>
+      <h1 id="introStepsTitle">What the assistant is supposed to do</h1>
+      <p class="soft">Here are its steps, in order. Tap <span class="pill">e.g.</span> to see one
+        way a step might be said, and a folded <span class="pill">&#8627; If&hellip;</span> line
+        to see what happens in that case.</p>
+      <div id="introFlow"></div>
+      <div id="introFlowWrap" class="diagram" hidden>
+        <h2>The same thing as a diagram</h2>
+        <a id="introFlowLink" target="_blank" rel="noopener"
+           title="open the diagram full size"><img class="flow-img" id="introFlowImg"
+           alt="workflow diagram"></a>
+        <p class="hint">Click the diagram to open it full size.</p>
+      </div>
+      <div class="intro-actions">
+        <button class="btn ghost" data-go="1" id="introBack">&larr; Back</button>
+        <button class="btn" id="introGo">Got it &mdash; let's start!</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- a task finished -->
+<div id="celebrate" class="celebrate" hidden>
+  <div class="card pop celebrate-card">
+    <div class="bigmark">&#10003;</div>
+    <h1 id="celTitle"></h1>
+    <p id="celBody"></p>
+    <button class="btn" id="celNext"></button>
+  </div>
+</div>
+
+<main id="work" hidden>
+  <div class="cols">
+    <aside class="side">
+     <div class="card">
+      <div class="panel-title"><span class="pe">&#x1F4CB;</span>
+        <span>The <span class="role-a">assistant</span>'s steps</span></div>
+      <div class="taskline">
+        <span class="em" id="taskEmoji"></span>
+        <div><b id="taskName"></b><span id="taskDesc"></span></div>
+      </div>
+      <button type="button" class="linkbtn review" id="reviewIntro">&#x21BA; review the
+        task intro</button>
+
+      <div id="flow"></div>
+
+      <details id="flowWrap" class="fold" hidden>
+        <summary>&#x1F5FA;&#xFE0F; The diagram</summary>
+        <img class="flow-img" id="flowImg" alt="workflow diagram">
+      </details>
+     </div>
+     <!-- background, not judged: its own card, visibly different -->
+     <div class="card bgcard">
+      <div class="bg-title"><span>&#x1F9D1; The user's brief</span>
+        <span class="nj">background &middot; not judged</span></div>
+      <p class="hint">What the simulated <span class="role-u">user</span> was told before the
+        conversation. Handy for context; you only judge the
+        <span class="role-a">assistant</span>.</p>
+      <blockquote id="userGoal"></blockquote>
+     </div>
+    </aside>
+
+    <section class="card convo">
+      <div class="panel-title"><span class="pe">&#x1F4AC;</span>
+        <span id="convTitle">Conversation</span>
+        <span class="chip task-chip" id="convTask"></span></div>
+      <p class="hint convo-hint">Read it through &mdash; only the
+        <span class="role-a">assistant</span> is judged.</p>
+      <div class="pickbanner" id="pickBanner" hidden></div>
+      <div id="transcript"></div>
+    </section>
+  </div>
+</main>
+
+<div class="dock" id="dock" hidden><div class="inner">
+  <div class="qhead">
+    <span class="stepno" id="stepno"></span>
+    <span class="stepdots" id="stepdots"></span>
+  </div>
+  <div id="cueBox"></div>
+  <p class="q" id="question"></p>
+  <div id="controls"></div>
+  <div class="row" style="margin-top:12px">
+    <button class="btn" id="next">Continue</button>
+    <span class="hint"><span class="kbd">Ctrl</span>+<span class="kbd">&#x21B5;</span></span>
+    <span class="hint" id="hint"></span>
+    <span class="err" id="err"></span>
+  </div>
+</div></div>
+
+<script src="/static/render.js"></script>
+<script src="/static/fun.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

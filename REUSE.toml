@@ -1,0 +1,48 @@
+version = 1
+SPDX-PackageName = "DialFork"
+SPDX-PackageSupplier = "Idiap Research Institute"
+SPDX-PackageDownloadLocation = "https://github.com/idiap/dialfork"
+
+# Figures from the paper and screenshots of the annotation tool
+[[annotations]]
+path = "assets/**"
+SPDX-FileCopyrightText = "Copyright © 2026 Idiap Research Institute"
+SPDX-License-Identifier = "MIT"
+
+# The logo: the trident emoji from Noto Emoji (https://github.com/googlefonts/noto-emoji)
+[[annotations]]
+path = "assets/logo.png"
+precedence = "override"
+SPDX-FileCopyrightText = "Copyright 2013 Google LLC"
+SPDX-License-Identifier = "Apache-2.0"
+
+# The README banner and the social preview card: the Noto Emoji trident next to the "DialFork" wordmark
+[[annotations]]
+path = ["assets/banner_light.png", "assets/banner_dark.png", "assets/social_preview.png"]
+precedence = "override"
+SPDX-FileCopyrightText = ["Copyright 2013 Google LLC", "Copyright © 2026 Idiap Research Institute"]
+SPDX-License-Identifier = "Apache-2.0 AND MIT"
+
+# Prediction files of the paper's methods (gzipped CSV)
+[[annotations]]
+path = "predictions/**/*.csv.gz"
+SPDX-FileCopyrightText = "Copyright © 2026 Idiap Research Institute"
+SPDX-License-Identifier = "MIT"
+
+# The released human study: anonymized judgments (CSV) and study database (SQLite)
+[[annotations]]
+path = ["annotool/data/dialfork_human_judgments.csv", "annotool/data/dialfork_human_study.sqlite"]
+SPDX-FileCopyrightText = "Copyright © 2026 Idiap Research Institute"
+SPDX-License-Identifier = "MIT"
+
+# The LLM judge: its answers (gzipped JSONL and CSV) and the selected judge (JSON)
+[[annotations]]
+path = ["judge/answers/**", "judge/frozen_judge.json"]
+SPDX-FileCopyrightText = "Copyright © 2026 Idiap Research Institute"
+SPDX-License-Identifier = "MIT"
+
+# The Hugging Face dataset card: its YAML front matter must come first, so no header
+[[annotations]]
+path = "scripts/hf_card.md"
+SPDX-FileCopyrightText = "Copyright © 2026 Idiap Research Institute"
+SPDX-License-Identifier = "MIT"

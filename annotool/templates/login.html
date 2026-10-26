@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!--
+SPDX-FileCopyrightText: Copyright © 2026 Idiap Research Institute
+SPDX-FileContributor: Sergio Burdisso <sergio.burdisso@idiap.ch>
+SPDX-License-Identifier: MIT
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DialFork annotation &mdash; admin login</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="cozy">
+<header>
+  <span class="title">DialFork annotation</span>
+  <span class="chip admin-chip">&#x2699;&#xFE0F; admin</span>
+</header>
+<div class="login-wrap">
+  <form class="card login-card pop" id="loginForm" autocomplete="on">
+    <div class="bigmark lock">&#x1F512;</div>
+    <h1>Admin login</h1>
+    <input type="text" name="username" value="admin" autocomplete="username" hidden>
+    <input type="password" id="pw" placeholder="Password" autocomplete="current-password"
+           autofocus required>
+    <button class="btn" id="go" type="submit">Log in</button>
+    <p class="err" id="err"></p>
+  </form>
+</div>
+<script src="/static/login.js"></script>
+</body>
+</html>

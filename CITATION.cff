@@ -1,0 +1,34 @@
+# SPDX-FileCopyrightText: Copyright © 2026 Idiap Research Institute
+# SPDX-FileContributor: Sergio Burdisso <sergio.burdisso@idiap.ch>
+# SPDX-License-Identifier: MIT
+
+cff-version: 1.2.0
+message: "If you find DialFork useful, please consider citing our paper."
+title: "DialFork"
+type: software
+license: MIT
+repository-code: "https://github.com/idiap/dialfork"
+url: "https://huggingface.co/datasets/DialFork/dialfork"
+authors: &authors
+  - family-names: Burdisso
+    given-names: Sergio
+  - family-names: Villatoro-Tello
+    given-names: Esaú
+  - family-names: Sánchez-Cortés
+    given-names: Dairazalia
+  - family-names: Labrak
+    given-names: Yanis
+  - family-names: Luque
+    given-names: Jordi
+  - family-names: Cernak
+    given-names: Milos
+  - family-names: Motlicek
+    given-names: Petr
+preferred-citation:
+  type: article
+  title: "DialFork: Going Beyond Factuality to Evaluate Procedural Hallucination in Conversational Agents"
+  authors: *authors
+  year: 2026
+  journal: "arXiv preprint arXiv:2610.21561"
+  doi: "10.48550/arXiv.2610.21561"
+  url: "https://arxiv.org/abs/2610.21561"

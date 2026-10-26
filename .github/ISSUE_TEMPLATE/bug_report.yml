@@ -1,0 +1,30 @@
+# SPDX-FileCopyrightText: Copyright © 2026 Idiap Research Institute
+# SPDX-FileContributor: Sergio Burdisso <sergio.burdisso@idiap.ch>
+# SPDX-License-Identifier: MIT
+
+name: 🐞 Something is not working
+description: A bug in the code, the evaluator, the data or the docs.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to report this! A few details help us reproduce it quickly.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command and output
+      description: The exact command you ran and its full output (error messages included).
+      render: shell
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: Python version, OS, and whether you ran locally or on a Slurm cluster.
+      placeholder: Python 3.11, Ubuntu 22.04, local

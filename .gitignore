@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: Copyright © 2026 Idiap Research Institute
+# SPDX-FileContributor: Sergio Burdisso <sergio.burdisso@idiap.ch>
+# SPDX-License-Identifier: MIT
+
+# Python, editors, OS
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.vscode/
+.idea/
+.DS_Store
+
+# caches and local installs created by the scripts (scripts/slurm.env, HOME=$PWD)
+.cache/
+.local/
+.ollama/
+
+# Slurm logs
+logs/
+*.out
+*.err
+
+# data (python scripts/download_data.py) and outputs
+datasets/
+results/
+hf_export/
+
+# annotation databases, except the released study
+annotool/data/*.sqlite
+annotool/data/*.sqlite-*
+!annotool/data/dialfork_human_study.sqlite
