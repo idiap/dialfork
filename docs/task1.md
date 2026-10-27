@@ -74,6 +74,8 @@ python evaluate.py --task 1 my_method.csv --per-task # also the per-task breakdo
 
 The reference set for a task is all its conformant dialogues. The target set for (*h*, *k*) is all its forks of type *h* at position *k*. Ties count as neither concordant nor discordant, so a constant distance scores 0, not 1.
 
+Your distance should come from the dialogues alone: the fork position is the answer, so don't let your method see it (nor tune it to the fork order).
+
 When you're happy with the result, add it to the **[leaderboard](leaderboard.md)**. We'd love to see it there! 🏆
 
 ## Reproducing the paper

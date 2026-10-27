@@ -132,6 +132,7 @@ The four components are always printed next to the Score.
 
 - **Any turn can be flagged,** the assistant's or the user's: user turns are evidence too (a user who keeps asking for the forecast is a strong hint). A streaming method reports the turn at which it fires; in deployment, the guardrail would act on the next assistant turn.
 - **Every `test` dialogue needs a row.** A prediction must fall in 0…*n*−1, where *n* is the dialogue's number of turns. `--allow-missing` scores a subset, for development only.
+- **Use the dialogue, not its id.** The `id` tells conformant dialogues from forks and gives away the fork position, so don't let your method see it.
 - **Declare your regime.** The evaluator cannot check whether a method used future turns or the workflow. When reporting, say whether it is streaming, non-streaming, or non-streaming + workflow, and which conformant dialogues it was calibrated on.
 
 When you're happy with the result, add it to the **[leaderboard](leaderboard.md)**. We'd love to see it there! 🏆

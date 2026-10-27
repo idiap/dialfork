@@ -16,31 +16,18 @@ This is where methods on DialFork meet. It starts with the methods from our pape
 
 ## How to add your method
 
-Your method goes on the leaderboard through a pull request on this repository, with its prediction file and one row of results.
+All it takes is a pull request with your prediction file. We take care of the rest.
 
-1. **Run your method** on DialFork and save its predictions as a CSV file, in your task's format. New to DialFork? The [Quickstart](../README.md#-quickstart) gets you from the data to a first score in a few minutes, and each task page details its format: [Task 1](task1.md#evaluate-your-method) · [Task 2](task2.md#evaluate-your-method) · [Task 3](task3.md#evaluate-your-method).
-2. **Score it** with [`evaluate.py`](../evaluate.py), and save the scores:
+1. **Run your method** on one of the three tasks and save its predictions as a simple CSV file. New to DialFork? The [Quickstart](../README.md#-quickstart) gets you from the data to a first score in a few minutes, and each task page details its format: [Task 1](task1.md#evaluate-your-method) · [Task 2](task2.md#evaluate-your-method) · [Task 3](task3.md#evaluate-your-method).
+2. **Score your CSV file** with [`evaluate.py`](../evaluate.py), where `N` is your task's number:
    ```bash
-   python evaluate.py --task N my_method.csv --json scores.json
+   python evaluate.py --task N my_method.csv
    ```
-3. **Open a pull request** that adds:
-   - your prediction file to `predictions/taskN/` (a `.csv.gz` is fine);
-   - your row to [`leaderboard/v1.json`](../leaderboard/v1.json), in your task's list. For `scores`, paste the content of `scores.json`. `regime` is `streaming`, `non-streaming` or `non-streaming+workflow`. A Task 3 row looks like this (Tasks 1 and 2 have no `regime` or `learns_from`, and Task 2 adds the `encoder`):
-     ```json
-     {
-       "method": "My Method",
-       "source": "community",
-       "regime": "streaming",
-       "learns_from": "train conformant",
-       "link": {"text": "Doe et al., 2027", "url": "https://..."},
-       "file": "predictions/task3/my-method.csv.gz",
-       "scores": {"by_type": {...}, "hall_mae": ..., "hall_cov": ..., "conf_mae": ..., "conf_cov": ..., "score": ...}
-     }
-     ```
-     Then run `python scripts/make_leaderboard.py`: it updates the tables below, which you should not edit by hand.
-4. **Tell us what your method used.** For Task 3, give the regime: streaming, non-streaming, or non-streaming + workflow. For every task, say whether it learned from or was calibrated on DialFork dialogues, and on which ones.
+3. **Open a pull request** that adds your file to `predictions/taskN/` (a `.csv.gz` is fine). The pull request form asks a few quick questions about your method: its name, a link to your paper or code, and what it used.
 
-CI re-scores every row's prediction file, so the tables can only show numbers that `evaluate.py` gives. One rule: **never train or tune on the labels** (fork position, fork turn, hallucination type). DialFork has a single test split, and those labels are the answers. Using the conformant dialogues as reference data is fine (our streaming detectors do it), as long as you say so.
+That's it! 🎉 Once it's merged, your method shows up here and on [Hugging Face](https://huggingface.co/spaces/DialFork/leaderboard).
+
+<!-- Maintainers: add a submission's row with `python scripts/make_leaderboard.py --add predictions/taskN/<file> --method ... --link TEXT URL` (plus --encoder for Task 2, --regime and --learns-from for Task 3), and commit it to the pull request. The tables below are written from leaderboard/v1.json: don't edit them by hand. -->
 
 ## Task 1 · Set-to-set distance
 

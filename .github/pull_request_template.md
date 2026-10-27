@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
 
 ## 🏆 Leaderboard submission
 
-- **Method:** <!-- name, as it should appear in the table -->
+- **Method:** <!-- name, as it should appear in the table (for Task 2, also the encoder) -->
 - **Paper or code:** <!-- link -->
 - **Task(s):** <!-- 1, 2 and/or 3 -->
 - **Task 3 regime:** <!-- streaming / non-streaming / non-streaming + workflow (Task 3 only) -->
@@ -24,6 +24,6 @@ paste the output here
 
 **Checklist**
 - [ ] The prediction file is in `predictions/taskN/` and covers the full test set.
-- [ ] A row is added to `leaderboard/v1.json` (`"source": "community"`, with a link), and `python scripts/make_leaderboard.py` was run.
 - [ ] The method never trained on or tuned with the labels (fork position, fork turn, hallucination type).
-- [ ] `pre-commit run --all-files` passes.
+
+We'll add your method to the leaderboard. Thanks for contributing! 🔱

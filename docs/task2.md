@@ -80,7 +80,7 @@ python evaluate.py --task 2 my_method.csv.gz
 python evaluate.py --task 2 my_method.csv.gz --per-task --json scores.json
 ```
 
-Ties count as neither concordant nor discordant, so they are never resolved in favour of the ground truth. Every file in [`predictions/task2/`](../predictions/task2/) can serve as a format example, e.g. `flowscore__bge-m3.csv.gz`.
+Your distance should come from the two dialogues alone: a fork's `id` gives away its position, which is the answer, so don't let your method see it (nor tune it to the fork order). Ties count as neither concordant nor discordant, so they are never resolved in favour of the ground truth. Every file in [`predictions/task2/`](../predictions/task2/) can serve as a format example, e.g. `flowscore__bge-m3.csv.gz`.
 
 When you're happy with the result, add it to the **[leaderboard](leaderboard.md)**. We'd love to see it there! 🏆
 
