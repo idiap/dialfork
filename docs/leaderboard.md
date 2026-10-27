@@ -19,7 +19,7 @@ This is where methods on DialFork meet. It starts with the methods from our pape
 Your method goes on the leaderboard through a pull request on this repository, with its prediction file and one row of results.
 
 1. **Run your method** on DialFork and save its predictions as a CSV file, in your task's format. New to DialFork? The [Quickstart](../README.md#-quickstart) gets you from the data to a first score in a few minutes, and each task page details its format: [Task 1](task1.md#evaluate-your-method) · [Task 2](task2.md#evaluate-your-method) · [Task 3](task3.md#evaluate-your-method).
-2. **Score it** with [`evaluate.py`](../evaluate.py), on the full test set (without `--allow-missing`), and save the scores:
+2. **Score it** with [`evaluate.py`](../evaluate.py), and save the scores:
    ```bash
    python evaluate.py --task N my_method.csv --json scores.json
    ```

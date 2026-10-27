@@ -23,7 +23,7 @@ paste the output here
 ```
 
 **Checklist**
-- [ ] The prediction file is in `predictions/taskN/` and covers the full test set (scored without `--allow-missing`).
+- [ ] The prediction file is in `predictions/taskN/` and covers the full test set.
 - [ ] A row is added to `leaderboard/v1.json` (`"source": "community"`, with a link), and `python scripts/make_leaderboard.py` was run.
 - [ ] The method never trained on or tuned with the labels (fork position, fork turn, hallucination type).
 - [ ] `pre-commit run --all-files` passes.
