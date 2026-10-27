@@ -10,6 +10,8 @@ SPDX-License-Identifier: MIT
 
 This is where methods on DialFork meet. It starts with the methods from our paper, and we hope it doesn't stay that way for long. Built something that beats them, or that fails in an interesting way? We'd love to add it.
 
+🤗 **Browse it on [Hugging Face](https://huggingface.co/spaces/DialFork/leaderboard)**, with sortable columns. It shows the same rows as the tables below, read from [`leaderboard/v1.json`](../leaderboard/v1.json).
+
 📄 = from the [DialFork paper](https://arxiv.org/abs/2610.21561) · 🌍 = community submission
 
 ## How to add your method

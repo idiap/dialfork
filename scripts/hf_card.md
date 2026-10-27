@@ -257,7 +257,7 @@ DialFork comes with three evaluation tasks, each matching a real-world need:
 | [Task 2](https://github.com/idiap/dialfork/blob/main/docs/task2.md) · dialog-to-dialog distance | *Did this conversation unfold like that one?* | two dialogues → distance | procedural retrieval |
 | [Task 3](https://github.com/idiap/dialfork/blob/main/docs/task3.md) · turn prediction | *Where did this conversation go off-track?* | a dialogue → the turn where it first goes off-track | real-time guardrails |
 
-Scoring is one command (`python evaluate.py --task N predictions.csv`), and the paper's methods and the [leaderboard](https://github.com/idiap/dialfork/blob/main/docs/leaderboard.md) are on GitHub.
+Scoring is one command (`python evaluate.py --task N predictions.csv`), and the paper's methods are on GitHub. See how they compare on the 🏆 [leaderboard](https://huggingface.co/spaces/DialFork/leaderboard).
 
 
 ## License and source data

@@ -15,6 +15,7 @@ SPDX-License-Identifier: MIT
 
 [![Paper](https://img.shields.io/badge/arXiv-2610.21561-b31b1b.svg)](https://arxiv.org/abs/2610.21561)
 [![Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Dataset-DialFork%2Fdialfork-ffcc00.svg)](https://huggingface.co/datasets/DialFork/dialfork)
+[![Leaderboard](https://img.shields.io/badge/%F0%9F%8F%86%20Leaderboard-DialFork%2Fleaderboard-ffcc00.svg)](https://huggingface.co/spaces/DialFork/leaderboard)
 [![Dataset DOI](https://img.shields.io/badge/DOI-10.34777%2Fweqb--h267-blue.svg)](https://doi.org/10.34777/weqb-h267)
 [![Code license: MIT](https://img.shields.io/badge/code-MIT-2ea44f.svg)](LICENSE)
 [![Data license: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-2ea44f.svg)](https://creativecommons.org/licenses/by/4.0/)
@@ -22,7 +23,7 @@ SPDX-License-Identifier: MIT
 
 **36,278 dialogues** · **24 tasks** · **12 domains** · **4 hallucination types** · **3 evaluation tasks**
 
-[Paper](https://arxiv.org/abs/2610.21561) · [Quickstart](#-quickstart) · [Dataset](docs/dataset.md) · [Task 1](docs/task1.md) · [Task 2](docs/task2.md) · [Task 3](docs/task3.md) · [Leaderboard](docs/leaderboard.md) · [Human study](docs/human_study.md) · [Changelog](CHANGELOG.md) · [Citation](#-citation)
+[Paper](https://arxiv.org/abs/2610.21561) · [Quickstart](#-quickstart) · [Dataset](docs/dataset.md) · [Task 1](docs/task1.md) · [Task 2](docs/task2.md) · [Task 3](docs/task3.md) · [Leaderboard](https://huggingface.co/spaces/DialFork/leaderboard) · [Human study](docs/human_study.md) · [Changelog](CHANGELOG.md) · [Citation](#-citation)
 
 </div>
 
@@ -158,7 +159,7 @@ That's it! 🎉
 
 ## 🏆 How the paper's methods do
 
-Here is where things stand in the paper. Think you can do better? We hope so! The **[leaderboard](docs/leaderboard.md)** explains how to add your method.
+Here is where things stand in the paper. Think you can do better? We hope so! The latest standings are on the **[🤗 leaderboard](https://huggingface.co/spaces/DialFork/leaderboard)**, and [docs/leaderboard.md](docs/leaderboard.md) explains how to add your method.
 
 <table>
 <tr><td valign="top">
