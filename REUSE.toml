@@ -41,6 +41,12 @@ path = ["judge/answers/**", "judge/frozen_judge.json"]
 SPDX-FileCopyrightText = "Copyright © 2026 Idiap Research Institute"
 SPDX-License-Identifier = "MIT"
 
+# The leaderboard's rows (JSON) and its Hugging Face Space, whose README must start with YAML front matter
+[[annotations]]
+path = ["leaderboard/*.json", "leaderboard/space/README.md"]
+SPDX-FileCopyrightText = "Copyright © 2026 Idiap Research Institute"
+SPDX-License-Identifier = "MIT"
+
 # The Hugging Face dataset card: its YAML front matter must come first, so no header
 [[annotations]]
 path = "scripts/hf_card.md"

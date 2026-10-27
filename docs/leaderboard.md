@@ -17,14 +17,28 @@ This is where methods on DialFork meet. It starts with the methods from our pape
 1. **Score it** with [`evaluate.py`](../evaluate.py) on the full test set (no `--allow-missing`).
 2. **Open a pull request** that adds:
    - your prediction file to `predictions/taskN/` (a `.csv.gz` is fine);
-   - a row to the table below (for Task 3, the table of your method's regime), with a link to your paper or code.
+   - your row to [`leaderboard/v1.json`](../leaderboard/v1.json), in your task's list. For `scores`, paste the file that `evaluate.py --json scores.json` writes. `regime` is `streaming`, `non-streaming` or `non-streaming+workflow`. A Task 3 row looks like this (Tasks 1 and 2 have no `regime` or `learns_from`, and Task 2 adds the `encoder`):
+     ```json
+     {
+       "method": "My Method",
+       "source": "community",
+       "regime": "streaming",
+       "learns_from": "train conformant",
+       "link": {"text": "Doe et al., 2027", "url": "https://..."},
+       "file": "predictions/task3/my-method.csv.gz",
+       "scores": {"by_type": {...}, "hall_mae": ..., "hall_cov": ..., "conf_mae": ..., "conf_cov": ..., "score": ...}
+     }
+     ```
+     Then run `python scripts/make_leaderboard.py`: it updates the tables below, which you should not edit by hand.
 3. **Tell us what your method used.** For Task 3, give the regime: streaming, non-streaming, or non-streaming + workflow. For every task, say whether it learned from or was calibrated on DialFork dialogues, and on which ones.
 
-We re-run `evaluate.py` on your file before merging. One rule: **never train or tune on the labels** (fork position, fork turn, hallucination type). DialFork has a single test split, and those labels are the answers. Using the conformant dialogues as reference data is fine (our streaming detectors do it), as long as you say so.
+CI re-scores every row's prediction file, so the tables can only show numbers that `evaluate.py` gives. One rule: **never train or tune on the labels** (fork position, fork turn, hallucination type). DialFork has a single test split, and those labels are the answers. Using the conformant dialogues as reference data is fine (our streaming detectors do it), as long as you say so.
 
 ## Task 1 · Set-to-set distance
 
 Kendall τ, higher is better. [Task page](task1.md)
+
+<!-- leaderboard:task1 -->
 
 | | method | WIC | SSPC | GR | CSC | **Avg.** | link |
 |---|---|---:|---:|---:|---:|---:|---|
@@ -35,9 +49,13 @@ Kendall τ, higher is better. [Task page](task1.md)
 | | *Random (control)* | *0.000* | *0.000* | *0.000* | *0.000* | *0.000* | |
 | | *Turn-count diff. (control)* | *−0.076* | *−0.340* | *0.278* | *−0.208* | *−0.087* | |
 
+<!-- /leaderboard:task1 -->
+
 ## Task 2 · Dialog-to-dialog distance
 
 Kendall τ, higher is better. One row per method, with its best encoder; [the task page](task2.md) has every (method, encoder) pair.
+
+<!-- leaderboard:task2 -->
 
 | | method | encoder | WIC | SSPC | GR | CSC | **Avg.** | link |
 |---|---|---|---:|---:|---:|---:|---:|---|
@@ -49,6 +67,8 @@ Kendall τ, higher is better. One row per method, with its best encoder; [the ta
 | | *Word-count diff. (control)* | – | *0.220* | *0.242* | *0.390* | *0.040* | *0.223* | |
 | | *Turn-count diff. (control)* | – | *0.025* | *0.251* | *0.226* | *0.002* | *0.126* | |
 | | *Random (control)* | – | *0.000* | *0.000* | *0.000* | *0.000* | *0.000* | |
+
+<!-- /leaderboard:task2 -->
 
 ## Task 3 · Hallucination turn prediction
 
@@ -68,6 +88,8 @@ In every regime, a method may learn only from the conformant dialogues of the `t
 
 The main track: a live guardrail, flagging a deviation as soon as it happens.
 
+<!-- leaderboard:task3-streaming -->
+
 | | method | learns from | MAE | Cov. | False alarms | **Score** | link |
 |---|---|---|---:|---:|---:|---:|---|
 | 📄 | SS (LaBSE) | train conformant | 2.19 | 93.24 | 12.02% | **73.69** | [DialFork paper](https://arxiv.org/abs/2610.21561) |
@@ -75,7 +97,11 @@ The main track: a live guardrail, flagging a deviation as soon as it happens.
 | 📄 | IT + NC (LaBSE) | train conformant | 1.94 | 94.80 | 16.31% | 73.23 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
 | 📄 | SS + NC (LaBSE) | train conformant | 2.20 | 93.56 | 15.47% | 72.45 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
 
+<!-- /leaderboard:task3-streaming -->
+
 ### Non-streaming
+
+<!-- leaderboard:task3-non-streaming -->
 
 | | method | learns from | MAE | Cov. | False alarms | **Score** | link |
 |---|---|---|---:|---:|---:|---:|---|
@@ -85,7 +111,11 @@ The main track: a live guardrail, flagging a deviation as soon as it happens.
 | 📄 | Qwen3.6-35B | none (zero-shot) | 5.62 | 82.94 | 29.92% | 64.56 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
 | 📄 | GPT-OSS-20B | none (zero-shot) | 6.48 | 72.38 | 20.04% | 62.65 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
 
+<!-- /leaderboard:task3-non-streaming -->
+
 ### Non-streaming + workflow (oracle reference)
+
+<!-- leaderboard:task3-non-streaming+workflow -->
 
 | | method | learns from | MAE | Cov. | False alarms | **Score** | link |
 |---|---|---|---:|---:|---:|---:|---|
@@ -94,6 +124,8 @@ The main track: a live guardrail, flagging a deviation as soon as it happens.
 | 📄 | Mistral-Small-3.2-24B | none (zero-shot) | 2.57 | 92.91 | 16.68% | 76.38 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
 | 📄 | Qwen3.6-35B | none (zero-shot) | 2.33 | 96.71 | 53.96% | 71.87 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
 | 📄 | GPT-OSS-20B | none (zero-shot) | 2.60 | 96.88 | 81.64% | 62.31 | [DialFork paper](https://arxiv.org/abs/2610.21561) |
+
+<!-- /leaderboard:task3-non-streaming+workflow -->
 
 ---
 

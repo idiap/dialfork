@@ -16,6 +16,14 @@ repos:
       - id: check-merge-conflict
       - id: check-added-large-files
         args: [--maxkb=1024]   # the released study database is ~600 KB
+  - repo: local
+    hooks:
+      - id: leaderboard
+        name: docs/leaderboard.md matches leaderboard/*.json
+        entry: python scripts/make_leaderboard.py --check
+        language: python
+        pass_filenames: false
+        files: ^(leaderboard/.*\.json|docs/leaderboard\.md|scripts/make_leaderboard\.py)$
   - repo: https://github.com/fsfe/reuse-tool
     rev: v6.2.0
     hooks:

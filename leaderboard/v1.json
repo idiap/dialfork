@@ -1,0 +1,571 @@
+{
+  "release": "v1",
+  "task1": [
+    {
+      "method": "FBD",
+      "source": "paper",
+      "link": {
+        "text": "Xiang et al., 2021",
+        "url": "https://aclanthology.org/2021.findings-acl.193/"
+      },
+      "file": "predictions/task1/fbd.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 0.9722222222222222,
+          "SSPC": 0.7916666666666666,
+          "GR": 0.9861111111111112,
+          "CSC": 0.9027777777777778
+        },
+        "avg": 0.9131944444444444
+      }
+    },
+    {
+      "method": "FlowKL",
+      "source": "paper",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task1/flowkl.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 0.8472222222222222,
+          "SSPC": 0.9027777777777778,
+          "GR": 0.9444444444444445,
+          "CSC": 0.8333333333333334
+        },
+        "avg": 0.8819444444444444
+      }
+    },
+    {
+      "method": "PRD",
+      "source": "paper",
+      "link": {
+        "text": "Xiang et al., 2021",
+        "url": "https://aclanthology.org/2021.findings-acl.193/"
+      },
+      "file": "predictions/task1/prd.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 0.9305555555555555,
+          "SSPC": 0.7638888888888888,
+          "GR": 0.9861111111111112,
+          "CSC": 0.8333333333333334
+        },
+        "avg": 0.8784722222222222
+      }
+    },
+    {
+      "method": "Word-count diff.",
+      "source": "control",
+      "file": "predictions/task1/word-count-diff.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 0.2222222222222222,
+          "SSPC": 0.20833333333333334,
+          "GR": 0.5833333333333334,
+          "CSC": -0.20833333333333334
+        },
+        "avg": 0.2013888888888889
+      }
+    },
+    {
+      "method": "Random",
+      "source": "control",
+      "scores": {
+        "by_type": {
+          "WIC": 0.0,
+          "SSPC": 0.0,
+          "GR": 0.0,
+          "CSC": 0.0
+        },
+        "avg": 0.0
+      }
+    },
+    {
+      "method": "Turn-count diff.",
+      "source": "control",
+      "file": "predictions/task1/turn-count-diff.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": -0.07638888888888888,
+          "SSPC": -0.34027777777777773,
+          "GR": 0.27777777777777773,
+          "CSC": -0.20833333333333334
+        },
+        "avg": -0.08680555555555555
+      }
+    }
+  ],
+  "task2": [
+    {
+      "method": "FlowScore",
+      "source": "paper",
+      "encoder": "BGE-M3",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task2/flowscore__bge-m3.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 0.9239934601693195,
+          "SSPC": 0.813518008506022,
+          "GR": 0.9424065053373125,
+          "CSC": 0.7001679466081535
+        },
+        "avg": 0.8450214801552018
+      }
+    },
+    {
+      "method": "Mean-turn emb.",
+      "source": "paper",
+      "encoder": "D2F",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task2/mean-turn-emb__dialog2flow-joint-dse-base.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 0.8477021059287991,
+          "SSPC": 0.7433180635371568,
+          "GR": 0.8946616913860911,
+          "CSC": 0.5610037970802629
+        },
+        "avg": 0.7616714144830775
+      }
+    },
+    {
+      "method": "Full-dialog emb.",
+      "source": "paper",
+      "encoder": "D2F",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task2/full-dialog-emb__dialog2flow-joint-dse-base.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 0.8166313212791163,
+          "SSPC": 0.7237998149478407,
+          "GR": 0.8426020559461483,
+          "CSC": 0.6034377128888011
+        },
+        "avg": 0.7466177262654766
+      }
+    },
+    {
+      "method": "FlowDTW",
+      "source": "paper",
+      "encoder": "D2F",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task2/flowdtw__dialog2flow-joint-dse-base.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 0.8639756046495766,
+          "SSPC": 0.7016475937609762,
+          "GR": 0.91253163023348,
+          "CSC": 0.48889570520638276
+        },
+        "avg": 0.7417626334626038
+      }
+    },
+    {
+      "method": "Shared prefix",
+      "source": "control",
+      "file": "predictions/task2/shared-prefix.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 0.687919364479653,
+          "SSPC": 0.6677993165831045,
+          "GR": 0.7119647888137189,
+          "CSC": 0.6620556100746038
+        },
+        "avg": 0.6824347699877701
+      }
+    },
+    {
+      "method": "Word-count diff.",
+      "source": "control",
+      "file": "predictions/task2/word-count-diff.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 0.21958246955055505,
+          "SSPC": 0.24211157452062615,
+          "GR": 0.3897463346070304,
+          "CSC": 0.039962983183555505
+        },
+        "avg": 0.22285084046544176
+      }
+    },
+    {
+      "method": "Turn-count diff.",
+      "source": "control",
+      "file": "predictions/task2/turn-count-diff.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 0.024690622388994568,
+          "SSPC": 0.25145883611565667,
+          "GR": 0.2257940219922482,
+          "CSC": 0.0024204102692345687
+        },
+        "avg": 0.1260909726915335
+      }
+    },
+    {
+      "method": "Random",
+      "source": "control",
+      "scores": {
+        "by_type": {
+          "WIC": 0.0,
+          "SSPC": 0.0,
+          "GR": 0.0,
+          "CSC": 0.0
+        },
+        "avg": 0.0
+      }
+    }
+  ],
+  "task3": [
+    {
+      "method": "SS (LaBSE)",
+      "source": "paper",
+      "regime": "streaming",
+      "learns_from": "train conformant",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task3/streaming-ss__labse.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 1.6825131232700734,
+          "SSPC": 1.3027724198521815,
+          "GR": 1.5625138740836526,
+          "CSC": 4.209958918862242
+        },
+        "hall_mae": 2.1894395840170375,
+        "hall_cov": 93.24324324324324,
+        "conf_mae": 6.334261982570806,
+        "conf_cov": 12.022367194780989,
+        "score": 73.68976789093773
+      }
+    },
+    {
+      "method": "IT (LaBSE)",
+      "source": "paper",
+      "regime": "streaming",
+      "learns_from": "train conformant",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task3/streaming-it__labse.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 1.6260324748676156,
+          "SSPC": 1.2549849376048374,
+          "GR": 0.9256659281268241,
+          "CSC": 4.12900209458843
+        },
+        "hall_mae": 1.9839213587969269,
+        "hall_cov": 93.86067101584342,
+        "conf_mae": 6.516239781762658,
+        "conf_cov": 12.488350419384902,
+        "score": 73.60254018028982
+      }
+    },
+    {
+      "method": "IT + NC (LaBSE)",
+      "source": "paper",
+      "regime": "streaming",
+      "learns_from": "train conformant",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task3/streaming-it-nc__labse.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 1.595832321319854,
+          "SSPC": 1.2866854705122437,
+          "GR": 0.9203030878617202,
+          "CSC": 3.939932545746401
+        },
+        "hall_mae": 1.9356883563600547,
+        "hall_cov": 94.80428704566636,
+        "conf_mae": 6.549482924482924,
+        "conf_cov": 16.309412861136998,
+        "score": 73.22591437133923
+      }
+    },
+    {
+      "method": "SS + NC (LaBSE)",
+      "source": "paper",
+      "regime": "streaming",
+      "learns_from": "train conformant",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task3/streaming-ss-nc__labse.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 1.7064763147924786,
+          "SSPC": 1.3328056048695325,
+          "GR": 1.6098897652889699,
+          "CSC": 4.134470750547298
+        },
+        "hall_mae": 2.19591060887457,
+        "hall_cov": 93.55778191985088,
+        "conf_mae": 6.579759088627665,
+        "conf_cov": 15.470643056849953,
+        "score": 72.45330536691273
+      }
+    },
+    {
+      "method": "Mistral-Small-3.2-24B",
+      "source": "paper",
+      "regime": "non-streaming",
+      "learns_from": "none (zero-shot)",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task3/llm-mistral-small3.2-24b.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 3.9827091533079835,
+          "SSPC": 2.8783998650620055,
+          "GR": 5.5564193936004935,
+          "CSC": 8.514917840830066
+        },
+        "hall_mae": 5.233111563200137,
+        "hall_cov": 78.20363466915191,
+        "conf_mae": 4.597682709447415,
+        "conf_cov": 12.115563839701771,
+        "score": 68.13945559909236
+      }
+    },
+    {
+      "method": "Llama-3.3-70B",
+      "source": "paper",
+      "regime": "non-streaming",
+      "learns_from": "none (zero-shot)",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task3/llm-llama3.3-70b.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 2.8520678053068367,
+          "SSPC": 2.037480198397032,
+          "GR": 4.995109440216409,
+          "CSC": 8.104166157016794
+        },
+        "hall_mae": 4.497205900234268,
+        "hall_cov": 80.62092264678472,
+        "conf_mae": 5.693088417400057,
+        "conf_cov": 18.35973904939422,
+        "score": 67.08749406263138
+      }
+    },
+    {
+      "method": "Gemma4-31B",
+      "source": "paper",
+      "regime": "non-streaming",
+      "learns_from": "none (zero-shot)",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task3/llm-gemma4-31b.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 3.8795002611171028,
+          "SSPC": 2.259558020223673,
+          "GR": 7.1213318363473626,
+          "CSC": 10.13407352765659
+        },
+        "hall_mae": 5.848615911336182,
+        "hall_cov": 73.32828518173346,
+        "conf_mae": 4.627394034536891,
+        "conf_cov": 9.785647716682199,
+        "score": 65.61660303098901
+      }
+    },
+    {
+      "method": "Qwen3.6-35B",
+      "source": "paper",
+      "regime": "non-streaming",
+      "learns_from": "none (zero-shot)",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task3/llm-qwen3.6-35b.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 4.279931620293153,
+          "SSPC": 3.2779554726293854,
+          "GR": 6.46228571554163,
+          "CSC": 8.452909190624107
+        },
+        "hall_mae": 5.618270499772069,
+        "hall_cov": 82.9391891891892,
+        "conf_mae": 4.861210713793301,
+        "conf_cov": 29.916123019571295,
+        "score": 64.55962685061878
+      }
+    },
+    {
+      "method": "GPT-OSS-20B",
+      "source": "paper",
+      "regime": "non-streaming",
+      "learns_from": "none (zero-shot)",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task3/llm-gpt-oss-20b.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 4.335407527491637,
+          "SSPC": 4.772540245987322,
+          "GR": 6.701145677269264,
+          "CSC": 10.09686114439758
+        },
+        "hall_mae": 6.476488648786451,
+        "hall_cov": 72.37884436160299,
+        "conf_mae": 4.397319624819625,
+        "conf_cov": 20.03727865796831,
+        "score": 62.64878696899559
+      }
+    },
+    {
+      "method": "Mistral-Small-3.2-24B",
+      "source": "paper",
+      "regime": "non-streaming+workflow",
+      "learns_from": "none (zero-shot)",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task3/llm-mistral-small3.2-24b-workflow.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 2.1367411391107725,
+          "SSPC": 1.7373089151873715,
+          "GR": 1.361113953496538,
+          "CSC": 5.034294698639412
+        },
+        "hall_mae": 2.5673646766085234,
+        "hall_cov": 92.91123019571296,
+        "conf_mae": 4.940522976049292,
+        "conf_cov": 16.68219944082013,
+        "score": 76.38110061647458
+      }
+    },
+    {
+      "method": "Llama-3.3-70B",
+      "source": "paper",
+      "regime": "non-streaming+workflow",
+      "learns_from": "none (zero-shot)",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task3/llm-llama3.3-70b-workflow.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 1.612427888768221,
+          "SSPC": 1.1855855207308286,
+          "GR": 0.6899383096901991,
+          "CSC": 3.8264763233182237
+        },
+        "hall_mae": 1.8286070106268681,
+        "hall_cov": 93.88979496738118,
+        "conf_mae": 5.180025161718525,
+        "conf_cov": 21.062441752096923,
+        "score": 77.09398819091388
+      }
+    },
+    {
+      "method": "Gemma4-31B",
+      "source": "paper",
+      "regime": "non-streaming+workflow",
+      "learns_from": "none (zero-shot)",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task3/llm-gemma4-31b-workflow.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 1.2789471513898119,
+          "SSPC": 1.3092783913385553,
+          "GR": 0.514696866158654,
+          "CSC": 5.297062813438529
+        },
+        "hall_mae": 2.0999963055813877,
+        "hall_cov": 93.03355079217148,
+        "conf_mae": 4.408859664925239,
+        "conf_cov": 30.475302889095992,
+        "score": 77.05762633791188
+      }
+    },
+    {
+      "method": "Qwen3.6-35B",
+      "source": "paper",
+      "regime": "non-streaming+workflow",
+      "learns_from": "none (zero-shot)",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task3/llm-qwen3.6-35b-workflow.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 1.8493060507094254,
+          "SSPC": 1.364511318923954,
+          "GR": 1.1409763874722707,
+          "CSC": 4.9625748960364335
+        },
+        "hall_mae": 2.3293421632855207,
+        "hall_cov": 96.70899347623485,
+        "conf_mae": 4.569402539455777,
+        "conf_cov": 53.96085740913327,
+        "score": 71.87379263724407
+      }
+    },
+    {
+      "method": "GPT-OSS-20B",
+      "source": "paper",
+      "regime": "non-streaming+workflow",
+      "learns_from": "none (zero-shot)",
+      "link": {
+        "text": "DialFork paper",
+        "url": "https://arxiv.org/abs/2610.21561"
+      },
+      "file": "predictions/task3/llm-gpt-oss-20b-workflow.csv.gz",
+      "scores": {
+        "by_type": {
+          "WIC": 2.4519415235420436,
+          "SSPC": 1.399866297391787,
+          "GR": 1.3661544241278818,
+          "CSC": 5.18048603788248
+        },
+        "hall_mae": 2.599612070736048,
+        "hall_cov": 96.87791239515377,
+        "conf_mae": 4.451437721114427,
+        "conf_cov": 81.64026095060578,
+        "score": 62.31223708683699
+      }
+    }
+  ]
+}

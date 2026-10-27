@@ -1,0 +1,257 @@
+<!doctype html>
+<!--
+SPDX-FileCopyrightText: Copyright © 2026 Idiap Research Institute
+SPDX-FileContributor: Sergio Burdisso <sergio.burdisso@idiap.ch>
+SPDX-License-Identifier: MIT
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DialFork Leaderboard</title>
+<style>
+  :root {
+    --bg: #ffffff; --panel: #f7f7f8; --text: #1f2328; --muted: #59636e; --border: #d8dee4;
+    --accent: #e8943a; --accent-soft: #fdf1e3; --gold: #ffcc33; --link: #b8620e; --row-hover: #fafafa;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d1117; --panel: #161b22; --text: #e6edf3; --muted: #9198a1; --border: #30363d;
+      --accent: #f0a04b; --accent-soft: #2b2113; --gold: #ffcc33; --link: #f0a04b; --row-hover: #1b2129;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 24px 16px 48px; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { text-align: center; margin-bottom: 20px; }
+  header img { width: 300px; max-width: 80%; }
+  .banner-dark { display: none; }
+  @media (prefers-color-scheme: dark) { .banner-light { display: none; } .banner-dark { display: inline; } }
+  header h1 { font-size: 1.15rem; font-weight: 600; margin: 8px 0 4px; }
+  header p { color: var(--muted); margin: 0 auto; max-width: 680px; }
+  .links { margin-top: 10px; font-size: .9rem; }
+  .links a { margin: 0 6px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between;
+         border-bottom: 1px solid var(--border); margin-top: 24px; }
+  .tabs { display: flex; gap: 2px; overflow-x: auto; }
+  .tab { background: none; border: 0; border-bottom: 3px solid transparent; color: var(--muted);
+         padding: 10px 14px; font: inherit; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .tab:hover { color: var(--text); }
+  .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); }
+  @media (max-width: 600px) {
+    .tab .long, .opt, .rank { display: none; }
+    th, td { padding: 8px 6px; }
+    th, td.method { white-space: normal; }
+  }
+  .release { color: var(--muted); font-size: .85rem; padding: 6px 0; }
+  .release select { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--border);
+                    border-radius: 6px; padding: 2px 6px; }
+  .sub { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 4px; }
+  .pill { font: inherit; font-size: .88rem; padding: 4px 12px; border-radius: 999px; cursor: pointer;
+          border: 1px solid var(--border); background: var(--panel); color: var(--muted); }
+  .pill[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--text); }
+  .about { color: var(--muted); font-size: .92rem; margin: 14px 0; }
+  .about b { color: var(--text); font-weight: 600; }
+  .scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+  th, td { padding: 8px 12px; text-align: left; white-space: nowrap; border-bottom: 1px solid var(--border); }
+  th { background: var(--panel); font-weight: 600; font-size: .85rem; color: var(--muted); user-select: none; }
+  th.sortable { cursor: pointer; }
+  th.sortable:hover { color: var(--text); }
+  th .arrow { display: inline-block; width: 1em; color: var(--accent); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.main { font-weight: 700; }
+  tbody tr:hover { background: var(--row-hover); }
+  tbody tr:last-child td { border-bottom: 0; }
+  tr.control td { color: var(--muted); font-style: italic; }
+  tr.best td.main { color: var(--accent); }
+  .rank { color: var(--muted); width: 2.5em; }
+  .tag { font-size: .75rem; font-style: normal; padding: 1px 7px; border-radius: 999px; margin-left: 6px;
+         border: 1px solid var(--border); color: var(--muted); }
+  .tag.community { border-color: var(--accent); color: var(--accent); }
+  .tools { display: flex; justify-content: space-between; align-items: center; margin: 10px 0 0;
+           font-size: .85rem; color: var(--muted); flex-wrap: wrap; gap: 8px; }
+  .tools label { cursor: pointer; }
+  .cta { margin-top: 28px; padding: 16px 18px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); }
+  .cta h2 { font-size: 1rem; margin: 0 0 6px; }
+  .cta p { margin: 0; color: var(--muted); font-size: .92rem; }
+  .error { padding: 16px; border: 1px solid var(--border); border-radius: 8px; color: var(--muted); }
+  footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 32px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img class="banner-light" src="https://huggingface.co/datasets/DialFork/dialfork/resolve/main/assets/banner_light.png" alt="DialFork">
+    <img class="banner-dark" src="https://huggingface.co/datasets/DialFork/dialfork/resolve/main/assets/banner_dark.png" alt="DialFork">
+    <h1>🏆 Leaderboard</h1>
+    <p>How well do methods catch <b>procedural hallucination</b>, when an LLM agent stays fluent and factually correct but stops following its workflow?</p>
+    <div class="links">
+      <a href="https://huggingface.co/papers/2610.21561">📄 Paper</a> ·
+      <a href="https://huggingface.co/datasets/DialFork/dialfork">🤗 Dataset</a> ·
+      <a href="https://github.com/idiap/dialfork">💻 Code</a> ·
+      <a href="https://github.com/idiap/dialfork/blob/main/docs/leaderboard.md#how-to-add-your-method">➕ Add your method</a>
+    </div>
+  </header>
+
+  <div class="bar">
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="release" id="release-box" hidden>Release <select id="release" aria-label="DialFork release"></select></div>
+  </div>
+  <div class="sub" id="regimes" hidden></div>
+  <p class="about" id="about"></p>
+  <div id="board"></div>
+  <div class="tools">
+    <label><input type="checkbox" id="controls" checked> show controls</label>
+    <span>📄 from the DialFork paper · 🌍 community submission · click a column to sort</span>
+  </div>
+
+  <div class="cta">
+    <h2>Built something that beats these? Or that fails in an interesting way?</h2>
+    <p>Score it with <code>evaluate.py</code> and open a pull request on
+      <a href="https://github.com/idiap/dialfork/blob/main/docs/leaderboard.md#how-to-add-your-method">GitHub</a>:
+      CI re-scores your prediction file, and your row shows up here once it is merged. Negative results are welcome too.</p>
+  </div>
+
+  <footer>Made with 💛 at <a href="https://www.idiap.ch">Idiap Research Institute</a> · Happy forking! 🔱</footer>
+</div>
+
+<script>
+// The leaderboard's rows live in the GitHub repo (leaderboard/<release>.json): a merged pull request shows up here.
+// For a local preview, pass another location: index.html?data=../
+const DATA = new URLSearchParams(location.search).get("data") || "https://raw.githubusercontent.com/idiap/dialfork/main/leaderboard/";
+const RELEASES = ["v1"];
+const DOCS = "https://github.com/idiap/dialfork/blob/main/docs/";
+const TYPES = ["WIC", "SSPC", "GR", "CSC"];
+
+const tau = v => v.toFixed(3).replace("-", "−");
+const typeCols = TYPES.map(t => ({ head: t, get: s => s.by_type[t], fmt: tau, title: t + ": Kendall τ on this hallucination type" }));
+const TASKS = {
+  task1: {
+    name: "Task 1", long: " · Set-to-set", page: "task1.md",
+    about: "<b>Do these conversations, as a whole, unfold like the reference ones?</b> Given two sets of dialogues, return a distance. Kendall τ against the fork order, higher is better.",
+    cols: [...typeCols, { head: "Avg.", get: s => s.avg, fmt: tau, main: true }],
+  },
+  task2: {
+    name: "Task 2", long: " · Dialog-to-dialog", page: "task2.md",
+    about: "<b>Did this conversation unfold like that one?</b> Given two dialogues, return a distance, e.g. for procedural retrieval. Kendall τ against the fork order, higher is better. One row per method, with its best encoder.",
+    text: [{ head: "Encoder", key: "encoder" }],
+    cols: [...typeCols, { head: "Avg.", get: s => s.avg, fmt: tau, main: true }],
+  },
+  task3: {
+    name: "Task 3", long: " · Turn prediction", page: "task3.md",
+    about: "<b>Where did this conversation go off-track?</b> Given a dialogue, return the turn where it first deviates, or none. On the Task 3 test split (18,241 dialogues); each regime gives a method different information, so compare within a regime.",
+    text: [{ head: "Learns from", key: "learns_from" }],
+    cols: [
+      { head: "MAE ↓", get: s => s.hall_mae, fmt: v => v.toFixed(2), low: true, title: "Mean absolute error, in turns, on the forks (lower is better)" },
+      { head: "Cov.", get: s => s.hall_cov, fmt: v => v.toFixed(2), title: "Coverage: % of forks flagged" },
+      { head: "False alarms ↓", get: s => s.conf_cov, fmt: v => v.toFixed(2) + "%", low: true, title: "% of conformant dialogues flagged (lower is better)" },
+      { head: "Score", get: s => s.score, fmt: v => v.toFixed(2), main: true, title: "Combines all four metrics; higher is better" },
+    ],
+    regimes: [
+      { key: "streaming", name: "Streaming", about: "The main track: a live guardrail. The decision on turn <i>t</i> may use turns 1…<i>t</i> only." },
+      { key: "non-streaming", name: "Non-streaming", about: "The decision may use the whole dialogue." },
+      { key: "non-streaming+workflow", name: "Non-streaming + workflow", about: "The whole dialogue plus the ground-truth workflow: an oracle reference, rarely available in practice." },
+    ],
+  },
+};
+
+const state = { release: RELEASES[0], task: "task1", regime: "streaming", sort: null, controls: true };
+const hash = location.hash.slice(1), hashTask = hash.split("-")[0];
+if (TASKS[hashTask]) {
+  state.task = hashTask;
+  const reg = hash.slice(hashTask.length + 1);
+  if ((TASKS[hashTask].regimes || []).some(r => r.key === reg)) state.regime = reg;
+}
+const cache = {};
+const narrow = matchMedia("(max-width: 600px)");
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+async function load(release) {
+  if (!cache[release]) {
+    const r = await fetch(DATA + release + ".json", { cache: "no-cache" });
+    if (!r.ok) throw new Error(r.status + " " + r.statusText);
+    cache[release] = await r.json();
+  }
+  return cache[release];
+}
+
+function tabs() {
+  $("tabs").innerHTML = Object.entries(TASKS).map(([k, t]) =>
+    `<button class="tab" role="tab" data-task="${k}" aria-selected="${k === state.task}">${t.name}<span class="long">${t.long}</span></button>`).join("");
+  const t = TASKS[state.task];
+  $("regimes").hidden = !t.regimes;
+  $("regimes").innerHTML = (t.regimes || []).map(r =>
+    `<button class="pill" data-regime="${r.key}" aria-pressed="${r.key === state.regime}">${r.name}</button>`).join("");
+  const reg = t.regimes && t.regimes.find(r => r.key === state.regime);
+  $("about").innerHTML = t.about + (reg ? " " + reg.about : "") +
+    ` <a href="${DOCS + t.page}">Task page →</a>`;
+}
+
+async function render() {
+  tabs();
+  history.replaceState(null, "", "#" + state.task + (TASKS[state.task].regimes ? "-" + state.regime : ""));
+  let lb;
+  try { lb = await load(state.release); }
+  catch (e) {
+    $("board").innerHTML = `<div class="error">Could not load the leaderboard (${esc(e.message)}). ` +
+      `It is also on <a href="${DOCS}leaderboard.md">GitHub</a>.</div>`;
+    return;
+  }
+  const t = TASKS[state.task];
+  let rows = lb[state.task].filter(r => !t.regimes || r.regime === state.regime);
+  if (!state.controls) rows = rows.filter(r => r.source !== "control");
+  const mainIdx = t.cols.findIndex(c => c.main);
+  const sortIdx = state.sort ? state.sort.idx : mainIdx;
+  const col = t.cols[sortIdx];
+  const dir = state.sort ? state.sort.dir : -1;
+  const ctl = r => r.source === "control";
+  rows = [...rows].sort((a, b) => (ctl(a) - ctl(b)) || dir * (col.get(a.scores) - col.get(b.scores)));
+  const best = Math.max(...rows.filter(r => !ctl(r)).map(r => t.cols[mainIdx].get(r.scores)));
+  const text = t.text || [];
+  // on a phone, the main score comes right after the method, so the ranking is visible without scrolling
+  const order = t.cols.map((c, i) => [c, i]);
+  if (narrow.matches) order.unshift(...order.splice(mainIdx, 1));
+  const head = `<tr><th class="rank">#</th><th>Method</th>${text.map(c => `<th class="opt">${c.head}</th>`).join("")}` +
+    order.map(([c, i]) => `<th class="num sortable" data-col="${i}" title="${esc(c.title || "")}">` +
+      `${c.head}<span class="arrow">${i === sortIdx ? (dir < 0 ? "▼" : "▲") : ""}</span></th>`).join("") +
+    `<th class="opt">Link</th></tr>`;
+  let n = 0;
+  const body = rows.map(r => {
+    const c = ctl(r);
+    const isBest = !c && t.cols[mainIdx].get(r.scores) === best;
+    const icon = r.source === "paper" ? "📄&nbsp;" : r.source === "community" ? "🌍&nbsp;" : "";
+    const tag = c ? `<span class="tag">control</span>` : r.source === "community" ? `<span class="tag community">community</span>` : "";
+    return `<tr class="${c ? "control" : ""}${isBest ? " best" : ""}">` +
+      `<td class="rank">${c ? "" : ++n}</td><td class="method">${icon}${esc(r.method)}${tag}</td>` +
+      text.map(x => `<td class="opt">${esc(r[x.key] || "–")}</td>`).join("") +
+      order.map(([x]) => `<td class="num${x.main ? " main" : ""}">${x.fmt(x.get(r.scores))}</td>`).join("") +
+      `<td class="opt">${r.link ? `<a href="${esc(r.link.url)}">${esc(r.link.text)}</a>` : ""}</td></tr>`;
+  }).join("");
+  $("board").innerHTML = `<div class="scroll"><table><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
+}
+
+$("release-box").hidden = RELEASES.length < 2;  // shown once there is more than one release
+$("release").innerHTML = RELEASES.map(r => `<option>${r}</option>`).join("");
+$("release").onchange = e => { state.release = e.target.value; render(); };
+$("controls").onchange = e => { state.controls = e.target.checked; render(); };
+document.addEventListener("click", e => {
+  const tab = e.target.closest("[data-task]"), reg = e.target.closest("[data-regime]"), th = e.target.closest("th[data-col]");
+  if (tab) { state.task = tab.dataset.task; state.sort = null; }
+  else if (reg) { state.regime = reg.dataset.regime; state.sort = null; }
+  else if (th) {
+    const idx = +th.dataset.col, c = TASKS[state.task].cols[idx];
+    const cur = state.sort && state.sort.idx === idx ? state.sort.dir : null;
+    state.sort = { idx, dir: cur === null ? (c.low ? 1 : -1) : -cur };
+  } else return;
+  render();
+});
+narrow.addEventListener("change", render);
+render();
+</script>
+</body>
+</html>

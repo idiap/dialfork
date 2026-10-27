@@ -2,8 +2,8 @@
 # SPDX-FileContributor: Sergio Burdisso <sergio.burdisso@idiap.ch>
 # SPDX-License-Identifier: MIT
 
-"""Smoke tests for the release: evaluate.py on the shipped prediction files, and the
-LLM judge's released answers.
+"""Smoke tests for the release: evaluate.py on the shipped prediction files, the LLM
+judge's released answers, and the leaderboard's numbers.
 
     python scripts/download_data.py --no-star   # the ground truth, once
     python tests/test_release.py
@@ -76,6 +76,10 @@ def main():
     rate = lambda rs: 100.0 * sum(r["appears"] in ("yes", "partly") for r in rs) / len(rs)  # noqa: E731
     check(round(rate(true)) == 84 and round(rate(foil), 1) == 2.0,
           "the judge confirms 84% of true instructions and 2.0% of foils on conformant dialogues")
+
+    print("Leaderboard")
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "make_leaderboard.py"), "--verify"], cwd=ROOT)
+    check(r.returncode == 0, "every leaderboard row scores what leaderboard/v1.json says")
 
     print("\nALL CHECKS PASSED")
 
