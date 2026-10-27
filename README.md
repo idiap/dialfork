@@ -17,6 +17,7 @@ SPDX-License-Identifier: MIT
 [![Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Dataset-DialFork%2Fdialfork-ffcc00.svg)](https://huggingface.co/datasets/DialFork/dialfork)
 [![Leaderboard](https://img.shields.io/badge/%F0%9F%8F%86%20Leaderboard-DialFork%2Fleaderboard-ffcc00.svg)](https://huggingface.co/spaces/DialFork/leaderboard)
 [![Dataset DOI](https://img.shields.io/badge/DOI-10.34777%2Fweqb--h267-blue.svg)](https://doi.org/10.34777/weqb-h267)
+<br>
 [![Code license: MIT](https://img.shields.io/badge/code-MIT-2ea44f.svg)](LICENSE)
 [![Data license: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-2ea44f.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![CI](https://github.com/idiap/dialfork/actions/workflows/ci.yml/badge.svg)](https://github.com/idiap/dialfork/actions/workflows/ci.yml)
