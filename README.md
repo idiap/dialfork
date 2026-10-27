@@ -44,7 +44,7 @@ Here is a real one from the dataset (`2115-GR-k2`):
 |:-:|---|---|
 | 🤖 | Hello, how can I help you today? | Hello, how can I help you today? |
 | 👤 | Hi there, I was hoping you could help me check a weather forecast. | Hi there, I was hoping you could help me check a weather forecast. |
-| |  | *(**FORK!!!**🔱 the agent is told to collect feedback instead)* |
+| |  | **FORK!!!** *(🔱 the agent is told to collect feedback instead)* |
 | 🤖 | I would be happy to help with that. Which day are you interested in for the forecast? | **Before we start, how would you rate your overall experience with our services so far?** |
 | 👤 | I'm looking for the weather on Tuesday. | It has been great so far, thank you for asking. |
 | 🤖 | And for which location would you like to see the weather forecast? | **That is wonderful to hear. Which specific features do you find most useful in our system?** |
