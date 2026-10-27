@@ -16,10 +16,16 @@ This is where methods on DialFork meet. It starts with the methods from our pape
 
 ## How to add your method
 
-1. **Score it** with [`evaluate.py`](../evaluate.py) on the full test set (no `--allow-missing`).
-2. **Open a pull request** that adds:
+Your method goes on the leaderboard through a pull request on this repository, with its prediction file and one row of results.
+
+1. **Run your method** on DialFork and save its predictions as a CSV file, in your task's format. New to DialFork? The [Quickstart](../README.md#-quickstart) gets you from the data to a first score in a few minutes, and each task page details its format: [Task 1](task1.md#evaluate-your-method) · [Task 2](task2.md#evaluate-your-method) · [Task 3](task3.md#evaluate-your-method).
+2. **Score it** with [`evaluate.py`](../evaluate.py), on the full test set (without `--allow-missing`), and save the scores:
+   ```bash
+   python evaluate.py --task N my_method.csv --json scores.json
+   ```
+3. **Open a pull request** that adds:
    - your prediction file to `predictions/taskN/` (a `.csv.gz` is fine);
-   - your row to [`leaderboard/v1.json`](../leaderboard/v1.json), in your task's list. For `scores`, paste the file that `evaluate.py --json scores.json` writes. `regime` is `streaming`, `non-streaming` or `non-streaming+workflow`. A Task 3 row looks like this (Tasks 1 and 2 have no `regime` or `learns_from`, and Task 2 adds the `encoder`):
+   - your row to [`leaderboard/v1.json`](../leaderboard/v1.json), in your task's list. For `scores`, paste the content of `scores.json`. `regime` is `streaming`, `non-streaming` or `non-streaming+workflow`. A Task 3 row looks like this (Tasks 1 and 2 have no `regime` or `learns_from`, and Task 2 adds the `encoder`):
      ```json
      {
        "method": "My Method",
@@ -32,7 +38,7 @@ This is where methods on DialFork meet. It starts with the methods from our pape
      }
      ```
      Then run `python scripts/make_leaderboard.py`: it updates the tables below, which you should not edit by hand.
-3. **Tell us what your method used.** For Task 3, give the regime: streaming, non-streaming, or non-streaming + workflow. For every task, say whether it learned from or was calibrated on DialFork dialogues, and on which ones.
+4. **Tell us what your method used.** For Task 3, give the regime: streaming, non-streaming, or non-streaming + workflow. For every task, say whether it learned from or was calibrated on DialFork dialogues, and on which ones.
 
 CI re-scores every row's prediction file, so the tables can only show numbers that `evaluate.py` gives. One rule: **never train or tune on the labels** (fork position, fork turn, hallucination type). DialFork has a single test split, and those labels are the answers. Using the conformant dialogues as reference data is fine (our streaming detectors do it), as long as you say so.
 
