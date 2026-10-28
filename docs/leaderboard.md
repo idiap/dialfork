@@ -16,7 +16,7 @@ This is where methods on DialFork meet. It starts with the methods from our pape
 
 ## How to add your method
 
-All it takes is a pull request with your prediction file. We take care of the rest.
+All it takes is a [pull request](https://github.com/idiap/dialfork/pulls) with your prediction file. We take care of the rest.
 
 1. **Run your method** on one of the three tasks and save its predictions as a simple CSV file. New to DialFork? The [Quickstart](../README.md#-quickstart) gets you from the data to a first score in a few minutes, and each task page details its format: [Task 1](task1.md#evaluate-your-method) · [Task 2](task2.md#evaluate-your-method) · [Task 3](task3.md#evaluate-your-method).
 2. **Score your CSV file** with [`evaluate.py`](../evaluate.py), where `N` is your task's number:
