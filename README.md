@@ -34,7 +34,7 @@ Ask an LLM agent to check the weather for you. It greets you warmly, writes flaw
 
 Nothing it said was *wrong*. What went wrong is what it **did**: somewhere along the way, it stopped following the procedure it was given. We call this **procedural hallucination**. Unlike factual hallucination, it hides in plain sight. Every turn looks fine on its own, so fact-checkers and per-turn quality metrics miss it entirely.
 
-**DialFork is a benchmark for catching it.** It works on raw dialogue text, and you don't need to annotate anything. Here's how.
+**DialFork is a benchmark for catching it.** It works on raw dialogue text, and you don't need to annotate anything. Along the way, it gives something more general too: a ground truth for how differently two conversations unfold, for anyone who compares, retrieves or generates dialogues. Here's how.
 
 ## 🔱 The idea: fork a good conversation
 
@@ -92,8 +92,8 @@ Every dialogue comes with what you need to work with it: the conversation, its h
 
 | | the question | you get → you return | what it's for |
 |---|---|---|---|
-| [**Task 1**](docs/task1.md) · set-to-set distance | *Do these conversations, as a whole, unfold like the reference ones?* | two sets of dialogues → a distance | monitoring a deployed agent, comparing model versions |
-| [**Task 2**](docs/task2.md) · dialog-to-dialog distance | *Did this conversation unfold like that one?* | two dialogues → a distance | **procedural retrieval**: finding conversations that went the same way |
+| [**Task 1**](docs/task1.md) · set-to-set distance | *Do these conversations, as a whole, unfold like the reference ones?* | two sets of dialogues → a distance | monitoring a deployed agent, comparing model versions, evaluating generated or simulated dialogues against real ones |
+| [**Task 2**](docs/task2.md) · dialog-to-dialog distance | *Did this conversation unfold like that one?* | two dialogues → a distance | **procedural retrieval**: finding conversations that went the same way; clustering dialogues by how they unfold |
 | [**Task 3**](docs/task3.md) · turn prediction | *Where did this conversation go off-track?* | a dialogue → the turn where it first goes off-track (or none) | **real-time guardrails** |
 
 Tasks 1 and 2 are scored with Kendall's τ against the fork order. Task 3 is scored by how close you get to the fork turn, and how rarely you cry wolf on conformant conversations. Each task page has the details.

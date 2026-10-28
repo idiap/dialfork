@@ -23,6 +23,8 @@ tags:
 - llm-evaluation
 - benchmark
 - synthetic
+- dialogue-similarity
+- synthetic-data-evaluation
 configs:
 - config_name: v1
   default: true
@@ -55,7 +57,7 @@ Ask an LLM agent to check the weather for you. It greets you warmly, writes flaw
 
 Nothing it said was *wrong*. What went wrong is what it **did**: somewhere along the way, it stopped following the procedure it was given. We call this **procedural hallucination**. Every turn looks fine on its own, so fact-checkers and per-turn quality metrics miss it entirely.
 
-**DialFork is a dataset for measuring it**: {{N_CONFORMANT}} task-oriented dialogues in which the assistant follows its workflow, and {{N_FORKED}} *forks* of them in which it drifts away, each labelled with *how far* it drifts and *where* it starts, with no manual annotation. The code to evaluate methods on it, the paper's methods, the generation pipeline and the annotation tool are on **[GitHub](https://github.com/idiap/dialfork)**.
+**DialFork is a dataset for measuring it**: {{N_CONFORMANT}} task-oriented dialogues in which the assistant follows its workflow, and {{N_FORKED}} *forks* of them in which it drifts away, each labelled with *how far* it drifts and *where* it starts, with no manual annotation. Along the way, it gives something more general too: a ground truth for how differently two conversations unfold, for anyone who compares, retrieves or generates dialogues. The code to evaluate methods on it, the paper's methods, the generation pipeline and the annotation tool are on **[GitHub](https://github.com/idiap/dialfork)**.
 
 ## 🔱 How it is built: forking a good conversation
 
@@ -253,8 +255,8 @@ DialFork comes with three evaluation tasks, each matching a real-world need:
 
 | task | question | input → output | for |
 |---|---|---|---|
-| [Task 1](https://github.com/idiap/dialfork/blob/main/docs/task1.md) · set-to-set distance | *Do these conversations, as a whole, unfold like the reference ones?* | two sets of dialogues → distance | monitoring deployed agents |
-| [Task 2](https://github.com/idiap/dialfork/blob/main/docs/task2.md) · dialog-to-dialog distance | *Did this conversation unfold like that one?* | two dialogues → distance | procedural retrieval |
+| [Task 1](https://github.com/idiap/dialfork/blob/main/docs/task1.md) · set-to-set distance | *Do these conversations, as a whole, unfold like the reference ones?* | two sets of dialogues → distance | monitoring deployed agents, evaluating generated or simulated dialogues |
+| [Task 2](https://github.com/idiap/dialfork/blob/main/docs/task2.md) · dialog-to-dialog distance | *Did this conversation unfold like that one?* | two dialogues → distance | procedural retrieval, clustering dialogues by how they unfold |
 | [Task 3](https://github.com/idiap/dialfork/blob/main/docs/task3.md) · turn prediction | *Where did this conversation go off-track?* | a dialogue → the turn where it first goes off-track | real-time guardrails |
 
 Scoring is one command (`python evaluate.py --task N predictions.csv`), and the paper's methods are on GitHub. See how they compare on the 🏆 [leaderboard](https://huggingface.co/spaces/DialFork/leaderboard).
