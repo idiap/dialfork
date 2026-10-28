@@ -23,11 +23,14 @@ jobs:
 
   tests:
     name: tests (Python ${{ matrix.python }})
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.9", "3.12"]
+        include:
+          # Python 3.9 is not built for newer Ubuntu images
+          - {python: "3.9", os: ubuntu-24.04}
+          - {python: "3.12", os: ubuntu-latest}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
