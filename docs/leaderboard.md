@@ -23,7 +23,7 @@ All it takes is a pull request with your prediction file. We take care of the re
    ```bash
    python evaluate.py --task N my_method.csv
    ```
-3. **Open a pull request** that adds your file to `predictions/taskN/` (a `.csv.gz` is fine). The pull request form asks a few quick questions about your method: its name, a link to your paper or code, and what it used.
+3. **Open a pull request** that adds your file to `predictions/taskN/` (a `.csv.gz` is fine). No git needed: upload it from your browser to [Task 1](https://github.com/idiap/dialfork/upload/main/predictions/task1) · [Task 2](https://github.com/idiap/dialfork/upload/main/predictions/task2) · [Task 3](https://github.com/idiap/dialfork/upload/main/predictions/task3), and GitHub opens the pull request for you. The pull request form asks a few quick questions about your method: its name, a link to your paper or code, and what it used.
 
 That's it! 🎉 Once it's merged, your method shows up here and on [Hugging Face](https://huggingface.co/spaces/DialFork/leaderboard).
 
