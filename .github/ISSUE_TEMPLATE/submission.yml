@@ -1,0 +1,79 @@
+# SPDX-FileCopyrightText: Copyright © 2026 Idiap Research Institute
+# SPDX-FileContributor: Sergio Burdisso <sergio.burdisso@idiap.ch>
+# SPDX-License-Identifier: MIT
+
+name: 🏆 Add my method to the leaderboard
+description: Send us your prediction file and we'll add your method to the leaderboard.
+title: "[Leaderboard] "
+labels: [leaderboard]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for contributing! 🔱 Attach your prediction file and tell us a bit about your method; we'll score it and add it to the [leaderboard](https://huggingface.co/spaces/DialFork/leaderboard).
+  - type: dropdown
+    id: task
+    attributes:
+      label: Task
+      options:
+        - Task 1 · Set-to-set distance
+        - Task 2 · Dialog-to-dialog distance
+        - Task 3 · Hallucination turn prediction
+    validations:
+      required: true
+  - type: textarea
+    id: file
+    attributes:
+      label: Prediction file
+      description: Drag and drop your `.csv` or `.csv.gz` file here. The [task page](https://github.com/idiap/dialfork/tree/main/docs) details its format.
+    validations:
+      required: true
+  - type: input
+    id: method
+    attributes:
+      label: Method name
+      description: As it should appear in the table.
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Paper or code
+      description: A link to your paper, preprint or code.
+      placeholder: https://
+    validations:
+      required: true
+  - type: input
+    id: encoder
+    attributes:
+      label: Encoder (Task 2 only)
+      description: The embedding model your method uses, if any.
+      placeholder: e.g. BGE-M3
+  - type: dropdown
+    id: regime
+    attributes:
+      label: Regime (Task 3 only)
+      description: What the decision on each turn may use. See the [regimes](https://github.com/idiap/dialfork/blob/main/docs/leaderboard.md#task-3--hallucination-turn-prediction).
+      options:
+        - streaming (turns 1 … t only)
+        - non-streaming (the whole dialogue)
+        - non-streaming + workflow (the whole dialogue and the ground-truth workflow)
+  - type: input
+    id: learns_from
+    attributes:
+      label: Learns from (Task 3 only)
+      description: What your method learned from or was calibrated on.
+      placeholder: e.g. train conformant, or none (zero-shot)
+  - type: textarea
+    id: scores
+    attributes:
+      label: Your scores (optional)
+      description: The output of `python evaluate.py --task N your_file.csv`, if you ran it.
+      render: text
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: One last check
+      options:
+        - label: My method never saw or was tuned on the labels (fork position, fork turn, hallucination type).
+          required: true

@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
 
 ## What does this pull request do?
 
-<!-- One or two sentences. For a leaderboard submission, fill in the section below; otherwise delete it. -->
+<!-- One or two sentences. For a leaderboard submission, fill in the section below; otherwise delete it. (Easier: submit with the form at https://github.com/idiap/dialfork/issues/new?template=submission.yml) -->
 
 ## 🏆 Leaderboard submission
 

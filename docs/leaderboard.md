@@ -16,18 +16,18 @@ This is where methods on DialFork meet. It starts with the methods from our pape
 
 ## How to add your method
 
-All it takes is a [pull request](https://github.com/idiap/dialfork/pulls) with your prediction file. We take care of the rest.
+All it takes is your prediction file and a short form. We take care of the rest.
 
 1. **Run your method** on one of the three tasks and save its predictions as a simple CSV file. New to DialFork? The [Quickstart](../README.md#-quickstart) gets you from the data to a first score in a few minutes, and each task page details its format: [Task 1](task1.md#evaluate-your-method) · [Task 2](task2.md#evaluate-your-method) · [Task 3](task3.md#evaluate-your-method).
 2. **Score your CSV file** with [`evaluate.py`](../evaluate.py), where `N` is your task's number:
    ```bash
    python evaluate.py --task N my_method.csv
    ```
-3. **Open a pull request** that adds your file to `predictions/taskN/` (a `.csv.gz` is fine). No git needed: upload it from your browser to [Task 1](https://github.com/idiap/dialfork/upload/main/predictions/task1) · [Task 2](https://github.com/idiap/dialfork/upload/main/predictions/task2) · [Task 3](https://github.com/idiap/dialfork/upload/main/predictions/task3), and GitHub opens the pull request for you. The pull request form asks a few quick questions about your method: its name, a link to your paper or code, and what it used.
+3. **[Send it to us](https://github.com/idiap/dialfork/issues/new?template=submission.yml)**: drag your file into the form and answer a few quick questions about your method: its name, a link to your paper or code, and what it used.
 
-That's it! 🎉 Once it's merged, your method shows up here and on [Hugging Face](https://huggingface.co/spaces/DialFork/leaderboard).
+That's it! 🎉 We'll check your file, and your method shows up here and on [Hugging Face](https://huggingface.co/spaces/DialFork/leaderboard). Prefer git? A pull request adding your file to `predictions/taskN/` works too.
 
-<!-- Maintainers: add a submission's row with `python scripts/make_leaderboard.py --add predictions/taskN/<file> --method ... --link TEXT URL` (plus --encoder for Task 2, --regime and --learns-from for Task 3), and commit it to the pull request. The tables below are written from leaderboard/v1.json: don't edit them by hand. -->
+<!-- Maintainers: add a submission's file to predictions/taskN/ and its row with `python scripts/make_leaderboard.py --add predictions/taskN/<file> --method ... --link TEXT URL` (plus --encoder for Task 2, --regime and --learns-from for Task 3), then commit and close the issue. The tables below are written from leaderboard/v1.json: don't edit them by hand. -->
 
 ## Task 1 · Set-to-set distance
 

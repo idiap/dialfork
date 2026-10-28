@@ -113,16 +113,16 @@ SPDX-License-Identifier: MIT
 
   <div class="cta">
     <h2>Built something that beats these? Or that fails in an interesting way?</h2>
-    <p>Score it with <code>evaluate.py</code> and open a pull request on
-      <a href="https://github.com/idiap/dialfork/blob/main/docs/leaderboard.md#how-to-add-your-method">GitHub</a>:
-      CI re-scores your prediction file, and your row shows up here once it is merged. Negative results are welcome too.</p>
+    <p><a href="https://github.com/idiap/dialfork/issues/new?template=submission.yml">Send us your prediction file</a>
+      with a short form, and we'll add your method here. <a href="https://github.com/idiap/dialfork/blob/main/docs/leaderboard.md#how-to-add-your-method">How it works</a>.
+      Negative results are welcome too.</p>
   </div>
 
   <footer>Made with 💛 at <a href="https://www.idiap.ch">Idiap Research Institute</a> · Happy forking! 🔱</footer>
 </div>
 
 <script>
-// The leaderboard's rows live in the GitHub repo (leaderboard/<release>.json): a merged pull request shows up here.
+// The leaderboard's rows live in the GitHub repo (leaderboard/<release>.json): a row added there shows up here.
 // For a local preview, pass another location: index.html?data=../
 const DATA = new URLSearchParams(location.search).get("data") || "https://raw.githubusercontent.com/idiap/dialfork/main/leaderboard/";
 const RELEASES = ["v1"];

@@ -4,9 +4,6 @@
 
 blank_issues_enabled: true
 contact_links:
-  - name: 🏆 Add a method to the leaderboard
-    url: https://github.com/idiap/dialfork/blob/main/docs/leaderboard.md#how-to-add-your-method
-    about: Leaderboard entries are added by pull request; this page explains how.
   - name: 📚 Documentation
     url: https://github.com/idiap/dialfork/tree/main/docs
     about: The dataset, the three tasks, reproducing the paper and the human study.
