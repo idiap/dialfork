@@ -62,12 +62,29 @@ def _safe_cosine_distance(v1, v2):
     return distance
 
 
-def _position_accuracy(ground_truth_rank, predicted_rank):
-    """Fraction of positions with the correct segment label."""
-    if not ground_truth_rank:
+def _position_accuracy(ground_truth_rank, distances):
+    """Fraction of positions with the correct segment label, with tied distances put in
+    random order (the expected value): a segment tied with m - 1 others lands on its own
+    position with probability 1/m, if that position is within the tied block. As for
+    _kendall_tau_from_distances, ties are never resolved in favor of the ground truth."""
+    n = len(ground_truth_rank)
+    if not n:
         return 0.0
-    matches = sum(g == p for g, p in zip(ground_truth_rank, predicted_rank))
-    return float(matches / len(ground_truth_rank))
+    total = 0.0
+    for i, item in enumerate(ground_truth_rank):
+        d = distances[item]
+        before = sum(distances[x] < d for x in ground_truth_rank)
+        tied = sum(distances[x] == d for x in ground_truth_rank)
+        if before <= i < before + tied:
+            total += 1.0 / tied
+    return float(total / n)
+
+
+def _exact_match(ground_truth_rank, distances):
+    """1.0 if the distances put the segments strictly in the ground-truth order: a tie is
+    not a recovery (as in Task 1)."""
+    return float(all(distances[a] < distances[b]
+                     for a, b in zip(ground_truth_rank, ground_truth_rank[1:])))
 
 
 def _kendall_tau_from_distances(ground_truth_rank, distances):
@@ -675,9 +692,9 @@ def evaluate_hallucination_type(
 
         predicted_rank = sorted(available_forks, key=lambda x: distances[x])
 
-        pos_acc = _position_accuracy(available_forks, predicted_rank)
+        pos_acc = _position_accuracy(available_forks, distances)
         tau = _kendall_tau_from_distances(available_forks, distances)
-        exact = float(predicted_rank == available_forks)
+        exact = _exact_match(available_forks, distances)
 
         exact_matches.append(exact)
         position_accuracies.append(pos_acc)
