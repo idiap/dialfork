@@ -302,7 +302,7 @@ DialFork is meant to grow, and we'd love your help with that:
 
 ## 📝 Citation
 
-If you find DialFork useful, please consider citing our paper:
+If you find DialFork useful, please consider citing our paper 😊:
 
 ```bibtex
 @misc{burdisso2026dialfork,
