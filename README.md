@@ -34,7 +34,7 @@ Ask an LLM agent for tomorrow's weather. It looks up the forecast for the right 
 
 Nothing the agent said was false, and no tool call was wrong. What went wrong is *how* the conversation went: the procedure was to look up the forecast *and tell you*, and the agent did the first half, then wandered off into a survey. An agent that drifts, in the conversation itself, from the procedure it was given, one fluent turn at a time, is what we call **procedural hallucination**. Every turn and every tool call looks fine on its own, so it slips past fact-checkers, per-turn metrics and tool logs alike.
 
-Tool calls are only a small part of most procedures. Take the weather one: ask for the city, ask for the day, look up the forecast, tell the user. Only one of those four steps is a tool call; the other three are things the agent *says* (asking, telling), the side of the agent that users see and interact with. **DialFork is the first benchmark for this overlooked side**: it measures procedural hallucination from the dialogue text alone. Here's how.
+Tool calls are only a small part of most procedures. Take the weather one: ask for the city, ask for the day, look up the forecast, tell the user. Only one of those four steps is a tool call; the other three are things the agent *says* (asking, telling), the side of the agent that users see and interact with. **DialFork is the first benchmark for this overlooked and complementary side**: it measures procedural hallucination from the dialogue text alone. Here's how.
 
 ## 🔱 The idea: fork a good conversation
 
