@@ -53,11 +53,11 @@ configs:
 
 ---
 
-Ask an LLM agent to check the weather for you. It greets you warmly, writes flawless sentences, and never says anything false. Twenty turns later, you still don't have your forecast.
+Ask an LLM agent for tomorrow's weather. It looks up the forecast for the right city and the right day, so its tool logs look perfect. But instead of telling you, it starts asking how you'd rate its service, then which features you like best. Twenty turns later, the conversation is over, and you still don't know whether you need an umbrella.
 
-Nothing it said was *wrong*. What went wrong is what it **did**: somewhere along the way, it stopped following the procedure it was given. We call this **procedural hallucination**. Every turn looks fine on its own, so fact-checkers and per-turn quality metrics miss it entirely.
+Nothing the agent said was false, and no tool call was wrong. What went wrong is *how* the conversation went: the procedure was to look up the forecast *and tell you*, and the agent did the first half, then wandered off into a survey. An agent that drifts, in the conversation itself, from the procedure it was given, one fluent turn at a time, is what we call **procedural hallucination**. Every turn and every tool call looks fine on its own, so it slips past fact-checkers, per-turn metrics and tool logs alike.
 
-**DialFork is a dataset for measuring it**: {{N_CONFORMANT}} task-oriented dialogues in which the assistant follows its workflow, and {{N_FORKED}} *forks* of them in which it drifts away, each labelled with *how far* it drifts and *where* it starts, with no manual annotation. Along the way, it gives something more general too: a ground truth for how differently two conversations unfold, for anyone who compares, retrieves or generates dialogues. The code to evaluate methods on it, the paper's methods, the generation pipeline and the annotation tool are on **[GitHub](https://github.com/idiap/dialfork)**.
+Tool calls are only a small part of most procedures. Take the weather one: ask for the city, ask for the day, look up the forecast, tell the user. Only one of those four steps is a tool call; the other three are things the agent *says* (asking, telling), the side of the agent that users see and interact with. **DialFork is the first benchmark for this overlooked side**: it measures procedural hallucination from the dialogue text alone. This dataset has {{N_CONFORMANT}} task-oriented dialogues in which the assistant follows its workflow, and {{N_FORKED}} *forks* of them in which it drifts away, each labelled with *how far* it drifts and *where* it starts, with no manual annotation. The code to evaluate methods on it, the paper's methods, the generation pipeline and the annotation tool are on **[GitHub](https://github.com/idiap/dialfork)**.
 
 ## 🔱 How it is built: forking a good conversation
 
@@ -251,7 +251,7 @@ The split is also in `extra/task3_splits.csv` (one row per source dialogue), whi
 
 ## 🎯 The benchmark
 
-DialFork comes with three evaluation tasks, each matching a real-world need:
+DialFork comes with three evaluation tasks, each matching a real-world need. Beyond hallucination, the forks give something more general: a ground truth for how differently two conversations unfold, for anyone who compares, retrieves or generates dialogues.
 
 | task | question | input → output | for |
 |---|---|---|---|

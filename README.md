@@ -30,11 +30,11 @@ SPDX-License-Identifier: MIT
 
 ---
 
-Ask an LLM agent to check the weather for you. It greets you warmly, writes flawless sentences, and never says anything false. Twenty turns later, you still don't have your forecast.
+Ask an LLM agent for tomorrow's weather. It looks up the forecast for the right city and the right day, so its tool logs look perfect. But instead of telling you, it starts asking how you'd rate its service, then which features you like best. Twenty turns later, the conversation is over, and you still don't know whether you need an umbrella.
 
-Nothing it said was *wrong*. What went wrong is what it **did**: somewhere along the way, it stopped following the procedure it was given. We call this **procedural hallucination**. Unlike factual hallucination, it hides in plain sight. Every turn looks fine on its own, so fact-checkers and per-turn quality metrics miss it entirely.
+Nothing the agent said was false, and no tool call was wrong. What went wrong is *how* the conversation went: the procedure was to look up the forecast *and tell you*, and the agent did the first half, then wandered off into a survey. An agent that drifts, in the conversation itself, from the procedure it was given, one fluent turn at a time, is what we call **procedural hallucination**. Every turn and every tool call looks fine on its own, so it slips past fact-checkers, per-turn metrics and tool logs alike.
 
-**DialFork is a benchmark for catching it.** It works on raw dialogue text, and you don't need to annotate anything. Along the way, it gives something more general too: a ground truth for how differently two conversations unfold, for anyone who compares, retrieves or generates dialogues. Here's how.
+Tool calls are only a small part of most procedures. Take the weather one: ask for the city, ask for the day, look up the forecast, tell the user. Only one of those four steps is a tool call; the other three are things the agent *says* (asking, telling), the side of the agent that users see and interact with. **DialFork is the first benchmark for this overlooked side**: it measures procedural hallucination from the dialogue text alone. Here's how.
 
 ## 🔱 The idea: fork a good conversation
 
@@ -89,6 +89,8 @@ Every dialogue comes with what you need to work with it: the conversation, its h
 <br clear="right">
 
 ## 🎯 Three tasks, three zoom levels
+
+Beyond hallucination, the forks give something more general: a ground truth for how differently two conversations unfold, for anyone who compares, retrieves or generates dialogues.
 
 | | the question | you get → you return | what it's for |
 |---|---|---|---|
