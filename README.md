@@ -24,7 +24,7 @@ SPDX-License-Identifier: MIT
 
 **36,278 dialogues** · **24 tasks** · **12 domains** · **4 hallucination types** · **3 evaluation tasks**
 
-[Paper](https://arxiv.org/abs/2610.21561) · [Quickstart](#-quickstart) · [Dataset](docs/dataset.md) · [Task 1](docs/task1.md) · [Task 2](docs/task2.md) · [Task 3](docs/task3.md) · [Leaderboard](https://huggingface.co/spaces/DialFork/leaderboard) · [Human study](docs/human_study.md) · [Changelog](CHANGELOG.md) · [Citation](#-citation)
+[Paper](https://arxiv.org/abs/2610.21561) · [Quickstart](#-quickstart) · [Dataset](docs/dataset.md) · [Task 1](docs/task1.md) · [Task 2](docs/task2.md) · [Task 3](docs/task3.md) · [Leaderboard](https://huggingface.co/spaces/DialFork/leaderboard) · [Human study](docs/human_study.md) · [FAQ](docs/faq.md) · [Changelog](CHANGELOG.md) · [Citation](#-citation)
 
 </div>
 
