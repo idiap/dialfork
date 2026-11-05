@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
 
 ## What about tool calls?
 
-Checking tool calls and checking the conversation look at two sides of the same agent, and each catches failures the other can't see:
+Procedural hallucination is a third axis, alongside factual accuracy and correct tool use. Checking tool calls and checking the conversation look at different sides of the same agent, and each catches failures the other can't see:
 
 | | **the conversation follows the procedure** | **the conversation drifts** |
 |---|---|---|
