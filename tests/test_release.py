@@ -59,6 +59,16 @@ def main():
     s = evaluate(3, "predictions/task3/first-turn.csv.gz")
     check(round(s["score"], 2) == 0.0 and round(s["hall_cov"], 2) == 100.0,
           "the first-turn baseline flags every dialogue and scores 0")
+    s = evaluate(3, "predictions/task3/streaming-ss__labse.csv.gz", "--delays")
+    d = s["delays"]
+    check(round(s["score"], 2) == 73.69 and d["n_forks"] == 17168
+          and abs(sum(d["percent"].values()) - 100.0) < 1e-6,
+          "--delays leaves the Score unchanged and bins every test fork once")
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "task3_human_onset.py"),
+                        "predictions/task3/streaming-ss__labse.csv.gz"],
+                       cwd=ROOT, capture_output=True, text=True)
+    check(r.returncode == 0 and "123 confirmed forks" in r.stdout,
+          "task3_human_onset.py scores 123 confirmed test forks with a human onset")
     files = sorted(glob.glob(os.path.join(ROOT, "predictions", "task3", "*.csv.gz")))
     for p in files:
         s = evaluate(3, p)

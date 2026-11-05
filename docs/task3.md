@@ -97,6 +97,73 @@ As reported in the paper, on the 18,241 dialogues of the Task 3 `test` split; MA
 
 To compare a new method with the paper's, score the paper's prediction files in [`predictions/task3/`](../predictions/task3/) with `evaluate.py`. Every (detector, encoder) pair and every LLM has one.
 
+## Beyond the MAE: when the flag fires
+
+The MAE counts a flag one turn early and one turn late alike, and it measures both against the fork turn, where the instruction is injected. A guardrail cares about the difference: an early flag fires before anything went wrong, and a late one after the user has seen the deviation. Two supplementary views refine the picture. Both are computed from the released prediction files, and neither is part of the Score or the leaderboard.
+
+### Signed detection delay
+
+`evaluate.py --delays` also reports where each fork's flag falls relative to the fork turn: *early* (before it, on the still-conformant part of the dialogue), *on time*, or 1, 2, 3 or more turns late. On the `test` split:
+
+| method | early | on time | +1 | +2 | +3 or more | not flagged | median delay |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| *Random* | *32.1%* | *5.8%* | *5.3%* | *5.1%* | *51.6%* | *0.0%* | *+3* |
+| *First turn* | *75.0%* | *25.0%* | *0.0%* | *0.0%* | *0.0%* | *0.0%* | *−4* |
+| *Last turn* | *0.6%* | *4.5%* | *0.0%* | *6.6%* | *88.3%* | *0.0%* | *+14* |
+| SS | 3.6% | 43.8% | 13.1% | 11.4% | 21.4% | 6.8% | +0 |
+| SS + NC | 4.9% | 42.7% | 13.1% | 11.5% | 21.4% | 6.4% | +0 |
+| IT | 3.9% | 48.2% | 12.5% | 10.6% | 18.8% | 6.1% | +0 |
+| IT + NC | 5.1% | 48.2% | 12.3% | 10.8% | 18.4% | 5.2% | +0 |
+| GPT-OSS-20B | 3.6% | 29.5% | 0.0% | 10.6% | 28.7% | 27.6% | +2 |
+| Qwen3.6-35B | 5.3% | 31.9% | 0.0% | 13.5% | 32.2% | 17.1% | +2 |
+| Gemma4-31B | 2.0% | 34.2% | 0.0% | 12.0% | 25.2% | 26.7% | +2 |
+| Llama-3.3-70B | 3.6% | 42.2% | 0.0% | 13.1% | 21.7% | 19.4% | +0 |
+| Mistral-Small-3.2-24B | 4.4% | 32.4% | 0.0% | 16.2% | 25.2% | 21.8% | +2 |
+| GPT-OSS-20B + workflow | 12.3% | 49.5% | 0.0% | 15.3% | 19.8% | 3.1% | +0 |
+| Qwen3.6-35B + workflow | 7.0% | 57.6% | 0.0% | 13.7% | 18.4% | 3.3% | +0 |
+| Gemma4-31B + workflow | 2.1% | 64.1% | 0.0% | 12.6% | 14.2% | 7.0% | +0 |
+| Llama-3.3-70B + workflow | 2.2% | 62.3% | 0.0% | 13.6% | 15.8% | 6.1% | +0 |
+| Mistral-Small-3.2-24B + workflow | 3.0% | 55.0% | 0.0% | 15.7% | 19.2% | 7.1% | +0 |
+
+Delays are in turns of either speaker, as the MAE. The LLMs only flag assistant turns, so their +1 (a user turn) is always empty and +2 is the next assistant turn; the streaming detectors can flag either.
+
+- **The streaming detectors rarely fire early** (4–5% of forks) and flag 43–48% of the forks right at the fork turn.
+- **Without the workflow, the LLMs tend to be one assistant turn late** (median +2 for four of the five) and miss 17–28% of the forks. Given the workflow, they flag 50–64% on time.
+
+### Against the onset people saw
+
+An injected behaviour can take a turn or two to become visible, for instance when the substituted workflow starts with the same steps as the intended one. In the [human study](human_study.md), annotators marked the first assistant turn where the behaviour starts: 96% of these onsets fall at or after the fork turn. On the 123 forks of the `test` split that annotators confirmed and placed (the onset is after the fork turn in 41 of them), `scripts/task3_human_onset.py` compares each flag with both references:
+
+| method | MAE vs fork turn | MAE vs human onset | before fork turn | fork turn → onset | at onset | after onset | not flagged |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| *Random* | *6.62* | *5.77* | *25.2%* | *8.1%* | *6.5%* | *60.2%* | *0.0%* |
+| *First turn* | *4.96* | *6.49* | *73.2%* | *20.3%* | *6.5%* | *0.0%* | *0.0%* |
+| *Last turn* | *13.15* | *11.63* | *0.0%* | *0.0%* | *2.4%* | *97.6%* | *0.0%* |
+| SS | 2.46 | 1.76 | 1.6% | 8.1% | 39.8% | 46.3% | 4.1% |
+| SS + NC | 2.39 | 1.74 | 1.6% | 8.9% | 39.8% | 45.5% | 4.1% |
+| IT | 2.32 | 1.65 | 1.6% | 8.1% | 43.9% | 42.3% | 4.1% |
+| IT + NC | 2.15 | 1.60 | 2.4% | 8.9% | 45.5% | 39.0% | 4.1% |
+| GPT-OSS-20B | 8.27 | 6.74 | 6.5% | 1.6% | 28.5% | 38.2% | 25.2% |
+| Qwen3.6-35B | 6.70 | 5.43 | 12.2% | 4.1% | 30.9% | 36.6% | 16.3% |
+| Gemma4-31B | 7.76 | 6.30 | 4.1% | 1.6% | 39.8% | 27.6% | 26.8% |
+| Llama-3.3-70B | 6.44 | 5.33 | 7.3% | 4.1% | 36.6% | 34.1% | 17.9% |
+| Mistral-Small-3.2-24B | 7.81 | 6.51 | 1.6% | 2.4% | 30.9% | 38.2% | 26.8% |
+| GPT-OSS-20B + workflow | 2.50 | 1.82 | 4.9% | 9.8% | 62.6% | 21.1% | 1.6% |
+| Qwen3.6-35B + workflow | 2.57 | 1.69 | 4.9% | 8.1% | 69.1% | 13.0% | 4.9% |
+| Gemma4-31B + workflow | 2.37 | 1.50 | 1.6% | 8.9% | 73.2% | 11.4% | 4.9% |
+| Llama-3.3-70B + workflow | 2.32 | 1.24 | 3.3% | 5.7% | 74.8% | 12.2% | 4.1% |
+| Mistral-Small-3.2-24B + workflow | 2.98 | 1.88 | 2.4% | 6.5% | 62.6% | 19.5% | 8.9% |
+
+- **Every method of the paper is closer to the onset people saw than to the fork turn**, by 0.5–1.5 turns: part of the error measured against the fork turn is the deviation not being visible yet.
+- **Few flags fall between the fork turn and the visible onset** (2–10%): methods mostly wait for the deviation to show in the text, as a text-only method should.
+
+The fork turn stays the reference of Task 3: it is known for every dialogue, while human onsets cover 123 test forks from five tasks, so read this table as indicative.
+
+```bash
+python evaluate.py --task 3 my_method.csv.gz --delays    # signed delay on the test split
+python scripts/task3_human_onset.py my_method.csv.gz     # against the human onsets
+```
+
 ## Evaluate your method
 
 Got a detector of your own? Write one row per dialogue of the Task 3 `test` split: **18,241 rows** (rows for `train` dialogues are ignored, so a file covering all 36,278 is fine too). If it learns anything from data, it may learn only from the conformant dialogues of the `train` split, not from its forks or labels (see the [Task 3 split](dataset.md#task-3-split)). Each dialogue is identified by its dataset `id` (`<dialog_id>-conformant` or `<dialog_id>-<TYPE>-k<k>`). `predicted_turn_index` is the position of the first turn your method flags as off-track, counting the conversation's turns from 0, or **empty** if it flags nothing. It uses the same convention as the dataset's `fork_turn_index`: on Hugging Face, it indexes a row's `turns` list.
@@ -128,7 +195,7 @@ The Score's default weights are the paper's and the leaderboard's. If your setti
 python evaluate.py --task 3 my_method.csv.gz --weights 0.3,0.2,0.1,0.4   # false alarms weigh most
 ```
 
-The four components are always printed next to the Score.
+The four components are always printed next to the Score. Add `--delays` to also see when your flags fire relative to the fork turn ([Beyond the MAE](#beyond-the-mae-when-the-flag-fires)).
 
 - **Any turn can be flagged,** the assistant's or the user's: user turns are evidence too (a user who keeps asking for the forecast is a strong hint). A streaming method reports the turn at which it fires; in deployment, the guardrail would act on the next assistant turn.
 - **Every `test` dialogue needs a row.** A prediction must fall in 0…*n*−1, where *n* is the dialogue's number of turns. `--allow-missing` scores a subset, for development only.

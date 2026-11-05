@@ -307,8 +307,50 @@ def evaluate_turns(args):
                 [(name, vals)], cols, "%.2f")
     print("  Score anchors: last-turn hallucinated MAE %.2f, first-turn conformant MAE %.2f"
           % (h_upper, c_upper))
-    return {"by_type": {TYPES[h]: v for h, v in m["by_type"].items()}, **{
+    out = {"by_type": {TYPES[h]: v for h, v in m["by_type"].items()}, **{
         k: m[k] for k in ("hall_mae", "hall_cov", "conf_mae", "conf_cov", "score")}}
+    if args.delays:
+        out["delays"] = print_delays(gold, pred, missing)
+    return out
+
+
+DELAY_BINS = ("early", "on time", "+1", "+2", "+3 or more", "not flagged")
+
+
+def delay_bin(delay):
+    """Bin a signed delay (flag turn minus reference turn; None: not flagged)."""
+    if delay is None:
+        return "not flagged"
+    if delay < 0:
+        return "early"
+    return ("on time", "+1", "+2")[delay] if delay < 3 else "+3 or more"
+
+
+def print_delays(gold, pred, missing):
+    """Signed detection delay on forks: the MAE counts a flag one turn early and one turn
+    late alike, but a guardrail does not; an early flag fires on the still-conformant part
+    before the fork turn."""
+    bins = dict.fromkeys(DELAY_BINS, 0)
+    delays = []
+    missing = set(missing)
+    for did, (task, kind, h, fork_turn_index, n_turns) in gold.items():
+        if kind != "fork" or did in missing:
+            continue
+        p = pred.get(did)
+        d = None if p is None else p - fork_turn_index
+        bins[delay_bin(d)] += 1
+        if d is not None:
+            delays.append(d)
+    n = sum(bins.values())
+    pct = {b: 100.0 * c / n for b, c in bins.items()} if n else {}
+    delays.sort()
+    median = delays[len(delays) // 2] if delays else None
+    print("\n  Signed detection delay on the %d forks (flag turn minus fork turn, in turns; "
+          "early = before the fork turn):" % n)
+    print("  " + "  ".join("%s %.1f%%" % (b, pct.get(b, 0.0)) for b in DELAY_BINS))
+    if median is not None:
+        print("  median delay of the flagged forks: %+d turns" % median)
+    return {"n_forks": n, "percent": pct, "median_delay": median}
 
 
 def main():
@@ -330,6 +372,9 @@ def main():
                          % (W_HALLU_MAE, W_CONF_MAE, W_HALLU_COV, W_CONF_COV))
     ap.add_argument("--split", choices=("test", "train", "all"), default="test",
                     help="Task 3: the split to score (default: the official Task 3 test split)")
+    ap.add_argument("--delays", action="store_true",
+                    help="Task 3: also print the signed detection delay on forks (flag turn minus "
+                         "fork turn): how many flags fire early, on time, or late")
     ap.add_argument("--json", default=None, help="also write the numbers to this JSON file")
     args = ap.parse_args()
     if args.data is None:

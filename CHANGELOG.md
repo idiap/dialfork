@@ -8,6 +8,13 @@ SPDX-License-Identifier: MIT
 
 Notable changes to DialFork: the dataset, the evaluation, the reported results and the code. Newest first.
 
+## 2026-11 · Task 3: when the flag fires
+
+Two supplementary Task 3 analyses, computed from the released prediction files. They do not change the Score or the leaderboard. See [Beyond the MAE](docs/task3.md#beyond-the-mae-when-the-flag-fires).
+
+- `evaluate.py --task 3 --delays` also reports the **signed detection delay** on forks: how many flags fire before the fork turn, on time, or 1, 2, 3 or more turns late, and the median delay. The MAE counts early and late flags alike.
+- `scripts/task3_human_onset.py` scores predictions against the **onset people saw** in the human study, as well as the fork turn, on the 123 confirmed test forks with a human onset. Every method of the paper is closer to the human onset than to the fork turn.
+
 ## 2026-10 · First public release
 
 The dataset, the evaluation script, the paper's methods and their predictions, and the LLM judge. Tasks 1 and 2 are as in the first version of the paper, [arXiv v1](https://arxiv.org/abs/2610.21561v1) (except for the rounding of a few Task 2 averages, by 0.001); **Task 3 differs**, as described below and in the current version of the paper.
