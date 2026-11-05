@@ -23,7 +23,7 @@ All it takes is your prediction file and a short form. We take care of the rest.
    ```bash
    python evaluate.py --task N my_method.csv
    ```
-3. **[Send it to us](https://github.com/idiap/dialfork/issues/new?template=submission.yml)**: drag your file into the form and answer a few quick questions about your method: its name, a link to your paper or code, and what it used.
+3. **[Send it to us](https://github.com/idiap/dialfork/issues/new/choose)**: pick *🏆 Add my method to the leaderboard*, drag your file into the form and answer a few quick questions about your method: its name, a link to your paper or code, and what it used.
 
 That's it! 🎉 We'll check your file, and your method shows up here and on [Hugging Face](https://huggingface.co/spaces/DialFork/leaderboard). Prefer git? A pull request adding your file to `predictions/taskN/` works too.
 
